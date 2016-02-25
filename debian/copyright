@@ -1,26 +1,34 @@
-This package was debianized by Alexander Wirt <formorer@debian.org> on
-Sat, 15 Nov 2003 13:33:25 +0100.
+Format: http://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Upstream-Name: eyeD3
+Upstream-Contact: Travis Shirk <travis@pobox.com>
+Source: http://www.travisshirk.net/eyeD3/releases/
+License: GPL-2+
 
-It was downloaded from http://www.travisshirk.net/eyeD3/releases/
+Files: *
+Copyright: (C) 2002-2011  Travis Shirk <travis@pobox.com>
+License: GPL-2+
 
-Upstream Author: Travis Shirk <travis@pobox.com>
+Files: debian/*
+Copyright: 2003 Alexander Wirt <formorer@debian.org>
+           2016 Gaetano Guerriero <x.guerriero@tin.it>
+License: GPL-2+
 
-Copyright: 2003 by Travis Shirk <travis@pobox.com>
 
-This program is free software; you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation; either version 2 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License with
-the Debian GNU/Linux distribution in file /usr/share/common-licenses/GPL-2;
-if not, write to the  Free Software Foundation, Inc., 51 Franklin St, Fifth 
-Floor, Boston, MA 02110-1301, USA.
-
-On Debian systems, the complete text of the GNU General Public
-License, version 2, can be found in /usr/share/common-licenses/GPL-2.
+License: GPL-2+
+  This program is free software; you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation; either version 2 of the License, or
+  (at your option) any later version.
+  .
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+  .
+  You should have received a copy of the GNU General Public License with
+  the Debian GNU/Linux distribution in file /usr/share/common-licenses/GPL-2;
+  if not, write to the  Free Software Foundation, Inc., 51 Franklin St, Fifth
+  Floor, Boston, MA 02110-1301, USA.
+  .
+  On Debian systems, the complete text of the GNU General Public
+  License, version 2, can be found in /usr/share/common-licenses/GPL-2.
