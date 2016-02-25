@@ -1,5 +1,5 @@
 Source: eyed3
-Section: python
+Section: sound
 Priority: optional
 Maintainer: Gaetano Guerriero <x.guerriero@tin.it>
 Build-Depends: debhelper (>= 9), dh-python, python, python-setuptools
@@ -20,7 +20,6 @@ Description: Python module for id3-tags manipulation
 
 Package: eyed3
 Architecture: all
-Section: sound
 Depends: python-eyed3 (= ${source:Version}), ${misc:Depends}
 Description: Display and manipulate id3-tags on the command-line
  A command-line editor to add/edit/remove ID3-tags on mp3 files.
