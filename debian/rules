@@ -1,0 +1,21 @@
+#!/usr/bin/make -f
+
+export PYBUILD_NAME=eyed3
+
+%:
+	dh $@ --with python2 --buildsystem=pybuild
+
+override_dh_auto_clean:
+	-rm -f .coverage
+	-rm -rf build
+	-rm -rf .pybuild
+	-rm -f *.pyc
+	-find src examples -name '*.pyc' -delete
+
+override_dh_auto_install:
+	dh_auto_install
+	rm $(CURDIR)/debian/python-eyed3/usr/bin/eyeD3
+
+override_dh_installdocs:
+	dh_installdocs -p python-eyed3
+	dh_installdocs -p eyed3 --link-doc=python-eyed3

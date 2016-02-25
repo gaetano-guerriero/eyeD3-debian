@@ -1,0 +1,13 @@
+--- a/pavement.py
++++ b/pavement.py
+@@ -150,8 +150,8 @@
+ 
+ @task
+ @needs("eyed3_info",
+-       "generate_setup",
+-       "minilib",
++       #"generate_setup",
++       #"minilib",
+        "setuptools.command.build")
+ def build():
+     '''Build the code'''
