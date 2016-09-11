@@ -1,2 +1,2 @@
-prevent-build-files-generation
-launch-script-with-system-python
+prevent-build-files-generation.patch
+launch-script-with-system-python.patch
