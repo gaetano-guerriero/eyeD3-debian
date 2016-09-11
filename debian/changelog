@@ -1,8 +1,35 @@
-eyed3 (0.7.9-1) UNRELEASED; urgency=low
+eyed3 (0.7.9-1) unstable; urgency=low
 
-  * new upstream version
+  * New upstream version (Closes: #815123)
+  * Drop patch reproducible-build (manpage is no longer generated)
+  * Drop patch CVE-2014-1934, fixed upstream
+  * Add patch launch-script-with-system-python.patch to always start
+    eyed3 script with system python (Closes: #720473)
 
  -- Gaetano Guerriero <x.guerriero@tin.it>  Tue, 23 Feb 2016 22:54:14 +0100
+
+eyed3 (0.6.18-3) unstable; urgency=medium
+
+  * QA upload.
+  * Added CVE-2014-1934.patch to avoid insecure use of /tmp/ (Closes:
+    #737062).
+  * Added reproducible-build.patch from Chris Lamb to make build
+    reproducible (Closes: #834983).
+  * Updated to debhelper 9.
+  * Updated Standards-Version from 3.9.2 to 3.9.8.
+
+ -- Petter Reinholdtsen <pere@debian.org>  Sat, 10 Sep 2016 14:26:05 +0000
+
+eyed3 (0.6.18-2) unstable; urgency=medium
+
+  * QA upload.
+  * Update maintainer to QA.
+  * Remove unused dpatch build dependency.
+  * Set source format to 3.0 (quilt), but ship no patches for now.
+  * Explicitly depend on dh-python for dh --with python2.
+  * Drop long unneeded Replaces: python2.{3,4}-eyed3
+
+ -- Christian Hofstaedtler <zeha@debian.org>  Sun, 17 Jul 2016 19:07:59 +0000
 
 eyed3 (0.6.18-1) unstable; urgency=low
 
