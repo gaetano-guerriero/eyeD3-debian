@@ -2,11 +2,11 @@ eyed3 (0.7.9-1) unstable; urgency=low
 
   * New upstream version (Closes: #815123)
   * Drop patch reproducible-build (manpage is no longer generated)
-  * Drop patch CVE-2014-1934, fixed upstream
+  * Drop patch CVE-2014-1934, issue is fixed upstream
   * Add patch launch-script-with-system-python.patch to always start
     eyed3 script with system python (Closes: #720473)
 
- -- Gaetano Guerriero <x.guerriero@tin.it>  Tue, 23 Feb 2016 22:54:14 +0100
+ -- Gaetano Guerriero <x.guerriero@tin.it>  Mon, 12 Sep 2016 06:25:26 +0000
 
 eyed3 (0.6.18-3) unstable; urgency=medium
 
