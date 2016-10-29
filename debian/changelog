@@ -6,6 +6,8 @@ eyed3 (0.7.9-1) unstable; urgency=low
   * Add patch launch-script-with-system-python.patch to always start
     eyed3 script with system python (Closes: #720473)
 
+  * Upload sponsored by Petter Reinholdtsen.
+
  -- Gaetano Guerriero <x.guerriero@tin.it>  Mon, 12 Sep 2016 06:25:26 +0000
 
 eyed3 (0.6.18-3) unstable; urgency=medium
