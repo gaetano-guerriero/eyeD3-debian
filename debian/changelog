@@ -1,3 +1,14 @@
+eyed3 (0.7.9-2) unstable; urgency=low
+
+  * Ensure info.py.in is never regenerated, to prevent build reproducibility
+    issues
+  * Exclude info.py.in from binary distribution, it is useless
+  * Fix Vcs-* control fields with debian packaging repository
+
+  * Upload sponsored by Petter Reinholdtsen.
+
+ -- Gaetano Guerriero <x.guerriero@tin.it>  Sun, 06 Nov 2016 18:59:07 +0000
+
 eyed3 (0.7.9-1) unstable; urgency=low
 
   * New upstream version (Closes: #815123)
