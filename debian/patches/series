@@ -1,2 +1,3 @@
 prevent-build-files-generation.patch
 launch-script-with-system-python.patch
+prevent-info.py-build-generation.patch
