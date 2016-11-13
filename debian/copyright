@@ -1,7 +1,7 @@
 Format: http://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
 Upstream-Name: eyeD3
 Upstream-Contact: Travis Shirk <travis@pobox.com>
-Source: http://www.travisshirk.net/eyeD3/releases/
+Source: http://eyed3.nicfit.net/releases/
 License: GPL-2+
 
 Files: *
