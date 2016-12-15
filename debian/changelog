@@ -1,10 +1,13 @@
-eyed3 (0.7.9-3) UNRELEASED; urgency=low
+eyed3 (0.7.10-1) unstable; urgency=low
 
+  * New upstream version
   * Fix homepage url in debian/copyright (Closes: #844260)
   * Fix wrong spelled option in manpage (Closes: #846586)
     Thanks to Edward Betts for the fix.
 
- -- Gaetano Guerriero <x.guerriero@tin.it>  Fri, 02 Dec 2016 22:02:54 +0100
+  * Upload sponsored by Petter Reinholdtsen.
+  
+ -- Gaetano Guerriero <x.guerriero@tin.it>  Thu, 15 Dec 2016 21:38:40 +0100
 
 eyed3 (0.7.9-2) unstable; urgency=low
 
