@@ -1,3 +1,11 @@
+eyed3 (0.7.10-2) unstable; urgency=low
+
+  * Add d/upstream/metadata with CPE record of project (Closes: #848282)
+
+  * Upload sponsored by Petter Reinholdtsen.
+
+ -- Gaetano Guerriero <x.guerriero@tin.it>  Thu, 29 Dec 2016 18:48:24 +0100
+
 eyed3 (0.7.10-1) unstable; urgency=low
 
   * New upstream version
