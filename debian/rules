@@ -3,16 +3,12 @@
 export PYBUILD_NAME=eyed3
 
 dstdir := $(CURDIR)/debian/python-eyed3
+eyed3_dstdir := $(CURDIR)/debian/eyed3
 
 %:
 	dh $@ --with python2 --buildsystem=pybuild
 
-override_dh_auto_clean:
-	-rm -f .coverage
-	-rm -rf build
-	-rm -rf .pybuild
-	-rm -f *.pyc
-	-find src examples -name '*.pyc' -delete
+# override_dh_auto_clean:
 
 
 override_dh_auto_test:
@@ -20,8 +16,8 @@ override_dh_auto_test:
 
 override_dh_auto_install:
 	dh_auto_install
-	rm ${dstdir}/usr/lib/python2.7/dist-packages/eyed3/info.py.in
-	rm ${dstdir}/usr/bin/eyeD3
+	mkdir -p ${eyed3_dstdir}/usr/bin/
+	mv ${dstdir}/usr/bin/eyeD3 ${eyed3_dstdir}/usr/bin/eyeD3
 
 override_dh_installdocs:
 	dh_installdocs -p python-eyed3
