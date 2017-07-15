@@ -14,6 +14,10 @@ override_dh_auto_clean:
 	-rm -f *.pyc
 	-find src examples -name '*.pyc' -delete
 
+
+override_dh_auto_test:
+
+
 override_dh_auto_install:
 	dh_auto_install
 	rm ${dstdir}/usr/lib/python2.7/dist-packages/eyed3/info.py.in
