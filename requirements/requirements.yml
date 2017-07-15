@@ -1,0 +1,37 @@
+main:
+    - six
+
+extra_display-plugin:
+    - grako
+
+test:
+    - pytest
+    - pytest-cov
+    - pytest-runner
+    - nose
+    - factory-boy
+
+test_py33:
+    - pathlib
+    - mock
+
+dev:
+    - nicfit.py[cookiecutter]
+    - Sphinx
+    - check-manifest
+    - flake8
+    - git+https://github.com/nicfit/gitchangelog.git
+    - ipdb
+    - pip-tools
+    - tox
+    - twine
+    - watchdog
+    - wheel
+    - paver
+    - cogapp
+    - sphinxcontrib-paverutils
+    - git+https://github.com/nicfit/gitchangelog.git
+    - sphinx-issues
+    # Upstream PR: https://bitbucket.org/dhellmann/sphinxcontrib-bitbucket/pull-requests/1/use-setuptools-over-distribute-python3/diff
+    #- sphinxcontrib-bitbucket
+    - hg+https://nicfit@bitbucket.org/nicfit/sphinxcontrib-bitbucket

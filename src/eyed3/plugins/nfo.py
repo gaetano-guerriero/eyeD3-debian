@@ -18,12 +18,12 @@
 ################################################################################
 from __future__ import print_function
 import time
-from eyed3 import LOCAL_ENCODING as ENCODING
-from eyed3.utils.console import printMsg, printError
+import eyed3
+from eyed3.utils.console import printMsg
 from eyed3.utils import formatSize, formatTime
-from eyed3.info import VERSION
 from eyed3.id3 import versionToString
 from eyed3.plugins import LoaderPlugin
+
 
 class NfoPlugin(LoaderPlugin):
     NAMES = ["nfo"]
@@ -58,7 +58,8 @@ class NfoPlugin(LoaderPlugin):
             audio_files = self.albums[album]
             if not audio_files:
                 continue
-            audio_files.sort(key=lambda af: af.tag.track_num)
+            audio_files.sort(key=lambda af: (af.tag.track_num[0] or 999,
+                                             af.tag.track_num[1] or 999))
 
             max_title_len = 0
             avg_bitrate = 0
@@ -66,7 +67,7 @@ class NfoPlugin(LoaderPlugin):
             for audio_file in audio_files:
                 tag = audio_file.tag
                 # Compute maximum title length
-                title_len = len(tag.title)
+                title_len = len(tag.title or u"")
                 if title_len > max_title_len:
                     max_title_len = title_len
                 # Compute average bitrate
@@ -114,7 +115,7 @@ class NfoPlugin(LoaderPlugin):
                 tag = audio_file.tag
                 count += 1
 
-                title = tag.title
+                title = tag.title or u""
                 title_len = len(title)
                 padding = " " * ((max_title_len - title_len) + 3)
                 time_secs = audio_file.info.time_secs
@@ -135,8 +136,7 @@ class NfoPlugin(LoaderPlugin):
             printMsg("")
             printMsg("=" * 78)
             printMsg(".NFO file created with eyeD3 %s on %s" %
-                     (VERSION, time.asctime()))
+                     (eyed3.version, time.asctime()))
             printMsg("For more information about eyeD3 go to %s" %
                      "http://eyeD3.nicfit.net/")
             printMsg("=" * 78)
-

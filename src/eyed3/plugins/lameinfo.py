@@ -16,14 +16,12 @@
 #  along with this program; if not, see <http://www.gnu.org/licenses/>.
 #
 ################################################################################
-from __future__ import print_function
 import os
 import math
-from eyed3 import LOCAL_ENCODING as ENCODING
-from eyed3.utils import formatSize, formatTime
-from eyed3.utils.console import (printMsg, printError, printWarning, boldText,
-                                 Fore, HEADER_COLOR)
+from eyed3.utils import formatSize
+from eyed3.utils.console import printMsg, boldText, Fore, HEADER_COLOR
 from eyed3.plugins import LoaderPlugin
+
 
 class LameInfoPlugin(LoaderPlugin):
     NAMES = ["lameinfo", "xing"]
@@ -40,7 +38,7 @@ class LameInfoPlugin(LoaderPlugin):
     def printHeader(self, filePath):
         from stat import ST_SIZE
         fileSize = os.stat(filePath)[ST_SIZE]
-        size_str = formatSize(fileSize).encode(ENCODING)
+        size_str = formatSize(fileSize)
         print("\n%s\t%s[ %s ]%s" % (boldText(os.path.basename(filePath),
                                              HEADER_COLOR()),
                                     HEADER_COLOR(), size_str,
@@ -51,7 +49,8 @@ class LameInfoPlugin(LoaderPlugin):
         super(LameInfoPlugin, self).handleFile(f)
 
         self.printHeader(f)
-        if not self.audio_file or not self.audio_file.info.lame_tag:
+        if (self.audio_file is None or self.audio_file.info is None or
+                not self.audio_file.info.lame_tag):
             printMsg('No LAME Tag')
             return
 
@@ -72,21 +71,22 @@ class LameInfoPlugin(LoaderPlugin):
         values.append(('Lowpass Filter', lt['lowpass_filter']))
 
         if "replaygain" in lt:
-           try:
-               peak = lt['replaygain']['peak_amplitude']
-               db = 20 * math.log10(peak)
-               val = '%.8f (%+.1f dB)' % (peak, db)
-               values.append(('Peak Amplitude', val))
-           except KeyError:
-               pass
-           for type in ['radio', 'audiofile']:
-               try:
-                   gain = lt['replaygain'][type]
-                   name = '%s Replay Gain' % gain['name'].capitalize()
-                   val = '%s dB (%s)' % (gain['adjustment'], gain['originator'])
-                   values.append((name, val))
-               except KeyError:
-                   pass
+            try:
+                peak = lt['replaygain']['peak_amplitude']
+                db = 20 * math.log10(peak)
+                val = '%.8f (%+.1f dB)' % (peak, db)
+                values.append(('Peak Amplitude', val))
+            except KeyError:
+                pass
+            for type in ['radio', 'audiofile']:
+                try:
+                    gain = lt['replaygain'][type]
+                    name = '%s Replay Gain' % gain['name'].capitalize()
+                    val = '%s dB (%s)' % (gain['adjustment'],
+                                          gain['originator'])
+                    values.append((name, val))
+                except KeyError:
+                    pass
 
         values.append(('Encoding Flags', ' '.join((lt['encoding_flags']))))
         if lt['nogap']:
@@ -109,4 +109,3 @@ class LameInfoPlugin(LoaderPlugin):
 
         for v in values:
             printMsg(format % (v))
-

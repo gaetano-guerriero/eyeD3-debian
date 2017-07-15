@@ -26,18 +26,19 @@ import eyed3
 import eyed3.utils
 import eyed3.utils.console
 import eyed3.plugins
-import eyed3.info
-from eyed3.compat import ConfigParser, ConfigParserError, StringIO
+import eyed3.__about__
+from eyed3.compat import ConfigParser, ConfigParserError, StringIO, UnicodeType
 
 from eyed3.utils.log import initLogging
 initLogging()
 
 DEFAULT_PLUGIN = "classic"
-DEFAULT_CONFIG = eyed3.info.USER_CONFIG
+DEFAULT_CONFIG = os.path.expandvars("${HOME}/.eyeD3/config.ini")
+USER_PLUGINS_DIR = os.path.expandvars("${HOME}/.eyeD3/plugins")
 
 
 def main(args, config):
-    if args.list_plugins:
+    if "list_plugins" in args and args.list_plugins:
         _listPlugins(config)
         return 0
 
@@ -115,7 +116,7 @@ def _loadConfig(args):
 
 
 def _getPluginPath(config):
-    plugin_path = [eyed3.info.USER_PLUGINS_DIR]
+    plugin_path = [USER_PLUGINS_DIR]
 
     if config and config.has_option("default", "plugin_path"):
         val = config.get("default", "plugin_path")
@@ -148,18 +149,31 @@ def profileMain(args, config):  # pragma: no cover
     return 0
 
 
+def setFileScannerOpts(arg_parser, paths_metavar="PATH",
+                       paths_help="Files or directory paths"):
+    arg_parser.add_argument("--exclude",
+            action="append", metavar="PATTERN", dest="excludes",
+            help="A regular expression for path exclusion. May be specified "
+                 "multiple times.")
+    arg_parser.add_argument("--fs-encoding",
+            action="store", dest="fs_encoding",
+            default=eyed3.LOCAL_FS_ENCODING, metavar="ENCODING",
+            help="Use the specified file system encoding for filenames. "
+                 "Default as it was detected is '%s' but this option is still "
+                 "useful when reading from mounted file systems." %
+                 eyed3.LOCAL_FS_ENCODING)
+    arg_parser.add_argument("paths", metavar=paths_metavar, nargs="*",
+                            help=paths_help)
+
+
 def makeCmdLineParser(subparser=None):
     from eyed3.utils import ArgumentParser
 
-    p = (ArgumentParser(prog=eyed3.info.NAME, add_help=True)
+    p = (ArgumentParser(prog=eyed3.__about__.__project_name__, add_help=True)
             if not subparser else subparser)
 
-    p.add_argument("paths", metavar="PATH", nargs="*",
-                   help="Files or directory paths")
-    p.add_argument("--exclude", action="append", metavar="PATTERN",
-                   dest="excludes",
-                   help="A regular expression for path exclusion. May be "
-                        "specified multiple times.")
+    setFileScannerOpts(p)
+
     p.add_argument("-L", "--plugins", action="store_true", default=False,
                    dest="list_plugins", help="List all available plugins")
     p.add_argument("-P", "--plugin", action="store", dest="plugin",
@@ -178,30 +192,16 @@ def makeCmdLineParser(subparser=None):
                         "extension added.")
     p.add_argument("-Q", "--quiet", action="store_true", dest="quiet",
                    default=False, help="A hint to plugins to output less.")
-    p.add_argument("--fs-encoding", action="store",
-                   dest="fs_encoding", default=eyed3.LOCAL_FS_ENCODING,
-                   metavar="ENCODING",
-                   help="Use the specified file system encoding for "
-                        "filenames.  Default as it was detected is '%s' "
-                        "but this option is still useful when reading "
-                        "from mounted file systems." %
-                        eyed3.LOCAL_FS_ENCODING)
-    p.add_argument("--no-config", action="store_true", dest="no_config",
-                   help="Do not load the default user config '%s'. "
-                        "The -c/--config options are still honored if "
-                        "present." % DEFAULT_CONFIG)
     p.add_argument("--no-color", action="store_true", dest="no_color",
                    help="Suppress color codes in console output. "
                         "This will happen automatically if the output is "
                         "not a TTY (e.g. when redirecting to a file)")
+    p.add_argument("--no-config",
+                   action="store_true", dest="no_config",
+                   help="Do not load the default user config '%s'. "
+                        "The -c/--config options are still honored if "
+                        "present." % DEFAULT_CONFIG)
 
-    # Debugging options
-    group = p.debug_arg_group
-    group.add_argument("--profile", action="store_true", default=False,
-                       dest="debug_profile",
-                       help="Run using python profiler.")
-    group.add_argument("--pdb", action="store_true", dest="debug_pdb",
-                       help="Drop into 'pdb' when errors occur.")
     return p
 
 
@@ -266,11 +266,9 @@ def parseCommandLine(cmd_line_args=None):
     return args, parser, config
 
 
-if __name__ == "__main__":  # pragma: no cover
+def _main():
+    """Entry point"""
     retval = 1
-
-    # We should run against the same install
-    eyed3.require(eyed3.info.VERSION)
 
     try:
         args, _, config = parseCommandLine()
@@ -282,7 +280,7 @@ if __name__ == "__main__":  # pragma: no cover
     except KeyboardInterrupt:
         retval = 0
     except (StopIteration, IOError) as ex:
-        eyed3.utils.console.printError(unicode(ex))
+        eyed3.utils.console.printError(UnicodeType(ex))
         retval = 1
     except Exception as ex:
         eyed3.utils.console.printError("Uncaught exception: %s\n" % str(ex))
@@ -303,4 +301,6 @@ if __name__ == "__main__":  # pragma: no cover
     finally:
         sys.exit(retval)
 
-# vim: set ft=python:
+
+if __name__ == "__main__":  # pragma: no cover
+    _main()

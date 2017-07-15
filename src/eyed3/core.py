@@ -20,6 +20,7 @@
 import os
 import time
 import functools
+import pathlib
 from . import LOCAL_FS_ENCODING
 from .utils import guessMimetype
 from . import compat
@@ -30,7 +31,7 @@ log = getLogger(__name__)
 
 AUDIO_NONE = 0
 '''Audio type selecter for no audio.'''
-AUDIO_MP3  = 1
+AUDIO_MP3 = 1
 '''Audio type selecter for mpeg (mp3) audio.'''
 
 AUDIO_TYPES = (AUDIO_NONE, AUDIO_MP3)
@@ -72,10 +73,12 @@ def load(path, tag_version=None):
     eventual format of the metadata.
     '''
     from . import mp3, id3
+    if not isinstance(path, pathlib.Path):
+        path = pathlib.Path(path)
     log.debug("Loading file: %s" % path)
 
-    if os.path.exists(path):
-        if not os.path.isfile(path):
+    if path.exists():
+        if not path.is_file():
             raise IOError("not a file: %s" % path)
     else:
         raise IOError("file not found: %s" % path)
@@ -85,7 +88,7 @@ def load(path, tag_version=None):
 
     if (mtype in mp3.MIME_TYPES or
         (mtype in mp3.OTHER_MIME_TYPES and
-         os.path.splitext(path)[1].lower() in mp3.EXTENSIONS)):
+         path.suffix.lower() in mp3.EXTENSIONS)):
         return mp3.Mp3AudioFile(path, tag_version)
     elif mtype == "application/x-id3":
         return id3.TagFile(path, tag_version)
@@ -95,7 +98,7 @@ def load(path, tag_version=None):
 
 class AudioInfo(object):
     '''A base container for common audio details.'''
-    time_secs  = 0
+    time_secs = 0
     '''The number of seconds of audio data (i.e., the playtime)'''
     size_bytes = 0
     '''The number of bytes of audio data.'''
@@ -109,32 +112,38 @@ class Tag(object):
 
     def _setArtist(self, val):
         raise NotImplementedError
+
     def _getArtist(self):
         raise NotImplementedError
 
     def _getAlbumArtist(self):
         raise NotImplementedError
+
     def _setAlbumArtist(self, val):
         raise NotImplementedError
 
     def _setAlbum(self, val):
         raise NotImplementedError
+
     def _getAlbum(self):
         raise NotImplementedError
 
     def _setTitle(self, val):
         raise NotImplementedError
+
     def _getTitle(self):
         raise NotImplementedError
 
     def _setTrackNum(self, val):
         raise NotImplementedError
+
     def _getTrackNum(self):
         raise NotImplementedError
 
     @property
     def artist(self):
         return self._getArtist()
+
     @artist.setter
     def artist(self, v):
         self._setArtist(v)
@@ -142,6 +151,7 @@ class Tag(object):
     @property
     def album_artist(self):
         return self._getAlbumArtist()
+
     @album_artist.setter
     def album_artist(self, v):
         self._setAlbumArtist(v)
@@ -149,6 +159,7 @@ class Tag(object):
     @property
     def album(self):
         return self._getAlbum()
+
     @album.setter
     def album(self, v):
         self._setAlbum(v)
@@ -156,6 +167,7 @@ class Tag(object):
     @property
     def title(self):
         return self._getTitle()
+
     @title.setter
     def title(self, v):
         self._setTitle(v)
@@ -167,13 +179,22 @@ class Tag(object):
         Either tuple value may be ``None``.
         '''
         return self._getTrackNum()
+
     @track_num.setter
     def track_num(self, v):
         self._setTrackNum(v)
 
+    def __init__(self, title=None, artist=None, album=None, album_artist=None,
+                 track_num=None):
+        self.title = title
+        self.artist = artist
+        self.album = album
+        self.album_artist = album_artist
+        self.track_num = track_num
+
 
 class AudioFile(object):
-    '''Abstract base class for audio file types (AudioInfo + Tag)'''
+    """Abstract base class for audio file types (AudioInfo + Tag)"""
 
     def _read(self):
         '''Subclasses MUST override this method and set ``self._info``,
@@ -183,52 +204,54 @@ class AudioFile(object):
 
     def rename(self, name, fsencoding=LOCAL_FS_ENCODING,
                preserve_file_time=False):
-        '''Rename the file to ``name``.
+        """Rename the file to ``name``.
         The encoding used for the file name is :attr:`eyed3.LOCAL_FS_ENCODING`
         unless overridden by ``fsencoding``. Note, if the target file already
         exists, or the full path contains non-existent directories the
         operation will fail with :class:`IOError`.
         File times are not modified when ``preserve_file_time`` is ``True``,
         ``False`` is the default.
-        '''
-        base = os.path.basename(self.path)
-        base_ext = os.path.splitext(base)[1]
-        dir = os.path.dirname(self.path)
-        if not dir:
-            dir = u'.'
+        """
+        curr_path = pathlib.Path(self.path)
+        ext = curr_path.suffix
 
-        new_name = u"%s%s" % (os.path.join(dir, name), base_ext)
-        if os.path.exists(new_name):
-            raise IOError(u"File '%s' exists, will not overwrite" % new_name)
-        elif not os.path.exists(os.path.dirname(new_name)):
+        new_path = curr_path.parent / "{name}{ext}".format(**locals())
+        if new_path.exists():
+            raise IOError(u"File '%s' exists, will not overwrite" % new_path)
+        elif not new_path.parent.exists():
             raise IOError(u"Target directory '%s' does not exists, will not "
-                          "create" % os.path.dirname(new_name))
+                          "create" % new_path.parent)
 
-        os.rename(self.path, new_name)
-        self.tag.file_info.name = new_name
+        os.rename(self.path, str(new_path))
+        if self.tag:
+            self.tag.file_info.name = str(new_path)
         if preserve_file_time:
             self.tag.file_info.touch((self.tag.file_info.atime,
                                       self.tag.file_info.mtime))
 
-        self.path = new_name
+        self.path = str(new_path)
 
     @property
     def path(self):
         '''The absolute path of this file.'''
         return self._path
+
     @path.setter
     def path(self, t):
         '''Set the path'''
         from os.path import abspath, realpath, normpath
         self._path = normpath(realpath(abspath(t)))
+
     @property
     def info(self):
         '''Returns a concrete implemenation of :class:`eyed3.core.AudioInfo`'''
         return self._info
+
     @property
     def tag(self):
         '''Returns a concrete implemenation of :class:`eyed3.core.Tag`'''
         return self._tag
+
     @tag.setter
     def tag(self, t):
         self._tag = t
@@ -236,6 +259,8 @@ class AudioFile(object):
     def __init__(self, path):
         '''Construct with a path and invoke ``_read``.
         All other members are set to None.'''
+        if isinstance(path, pathlib.Path):
+            path = str(path)
         self.path = path
 
         self.type = None
@@ -244,7 +269,7 @@ class AudioFile(object):
         self._read()
 
 
-@compat.total_ordering
+@functools.total_ordering
 class Date(object):
     '''
     A class for representing a date and time (optional). This class differs
@@ -290,23 +315,28 @@ class Date(object):
 
         # Python's date classes do a lot more date validation than does not
         # need to be duplicated here.  Validate it
-        _ = Date._validateFormat(str(self))
+        _ = Date._validateFormat(str(self))                           # noqa
 
     @property
     def year(self):
         return self._year
+
     @property
     def month(self):
         return self._month
+
     @property
     def day(self):
         return self._day
+
     @property
     def hour(self):
         return self._hour
+
     @property
     def minute(self):
         return self._minute
+
     @property
     def second(self):
         return self._second
@@ -327,7 +357,7 @@ class Date(object):
 
     def __lt__(self, rhs):
         if not rhs:
-            return True
+            return False
 
         for l, r in ((self.year, rhs.year),
                      (self.month, rhs.month),
@@ -335,10 +365,15 @@ class Date(object):
                      (self.hour, rhs.hour),
                      (self.minute, rhs.minute),
                      (self.second, rhs.second)):
+
+            l = l if l is not None else -1
+            r = r if r is not None else -1
+
             if l < r:
                 return True
             elif l > r:
                 return False
+
         return False
 
     def __hash__(self):
@@ -364,6 +399,8 @@ class Date(object):
     @staticmethod
     def parse(s):
         '''Parses date strings that conform to ISO-8601.'''
+        if not isinstance(s, compat.UnicodeType):
+            s = s.decode("ascii")
         s = s.strip('\x00')
 
         pdate, fmt = Date._validateFormat(s)
@@ -401,7 +438,7 @@ class Date(object):
         return s
 
     def __unicode__(self):
-        return unicode(str(self), "latin1")
+        return compat.unicode(str(self), "latin1")
 
 
 def parseError(ex):

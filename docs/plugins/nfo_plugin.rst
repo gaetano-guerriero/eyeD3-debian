@@ -4,6 +4,25 @@ nfo - (I)NFO File Generator
 .. {{{cog
 .. cog.out(cog_pluginHelp("nfo"))
 .. }}}
+
+*Create NFO files for each directory scanned.*
+
+Names
+-----
+nfo 
+
+Description
+-----------
+Each directory scanned is treated as an album and a `NFO <http://en.wikipedia.org/wiki/.nfo>`_ file is written to standard out.
+
+NFO files are often found in music archives.
+
+Options
+-------
+.. code-block:: text
+
+  No extra options supported
+
 .. {{{end}}}
 
 Example
@@ -12,6 +31,8 @@ Example
 .. code-block:: bash
 
   $ eyeD3 -P nfo ~/music/Nine\ Inch\ Nails/1992\ -\ Broken/
+
+::
 
   Artist   : Nine Inch Nails
   Album    : Broken

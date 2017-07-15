@@ -17,19 +17,16 @@
 #
 ################################################################################
 from __future__ import print_function
-import os, sys, types
+import os
+import sys
 
-try:
-    from collections import OrderedDict
-except ImportError:
-    from ordereddict import OrderedDict
 from eyed3 import core, utils
 from eyed3.utils import guessMimetype
 from eyed3.utils.console import printMsg, printError
+from eyed3.utils.log import getLogger
 
 _PLUGINS = {}
 
-from ..utils.log import getLogger
 log = getLogger(__name__)
 
 
@@ -56,9 +53,8 @@ def load(name=None, reload=False, paths=None):
         # 1) tis a file
         # 2) does not start with '_', or '.'
         # 3) avoid the .pyc dup
-        return bool(os.path.isfile(os.path.join(d, f))
-                    and f[0] not in ('_', '.')
-                    and f.endswith(".py"))
+        return bool(os.path.isfile(os.path.join(d, f)) and
+                    f[0] not in ('_', '.') and f.endswith(".py"))
 
     log.debug("Extra plugin paths: %s" % paths)
     for d in [os.path.dirname(__file__)] + (paths if paths else []):
@@ -132,9 +128,8 @@ class Plugin(utils.FileHandler):
 
     def __init__(self, arg_parser):
         self.arg_parser = arg_parser
-        self.arg_group = arg_parser.add_argument_group("Plugin options",
-                                                  "%s\n%s" % (self.SUMMARY,
-                                                              self.DESCRIPTION))
+        self.arg_group = arg_parser.add_argument_group(
+                "Plugin options", u"%s\n%s" % (self.SUMMARY, self.DESCRIPTION))
 
     def start(self, args, config):
         '''Called after command line parsing but before any paths are
@@ -153,24 +148,24 @@ class Plugin(utils.FileHandler):
 
 
 class LoaderPlugin(Plugin):
-    '''A base class that provides auto loading of audio files'''
+    """A base class that provides auto loading of audio files"""
 
     def __init__(self, arg_parser, cache_files=False, track_images=False):
-        '''Constructor. If ``cache_files`` is True (off by default) then each
+        """Constructor. If ``cache_files`` is True (off by default) then each
         AudioFile is appended to ``_file_cache`` during ``handleFile`` and
-        the list is cleared by ``handleDirectory``.'''
+        the list is cleared by ``handleDirectory``."""
         super(LoaderPlugin, self).__init__(arg_parser)
         self._num_loaded = 0
         self._file_cache = [] if cache_files else None
         self._dir_images = [] if track_images else None
 
     def handleFile(self, f, *args, **kwargs):
-        '''Loads ``f`` and sets ``self.audio_file`` to an instance of
+        """Loads ``f`` and sets ``self.audio_file`` to an instance of
         :class:`eyed3.core.AudioFile` or ``None`` if an error occurred or the
         file is not a recognized type.
 
         The ``*args`` and ``**kwargs`` are passed to :func:`eyed3.core.load`.
-        '''
+        """
         self.audio_file = None
 
         try:
@@ -190,9 +185,9 @@ class LoaderPlugin(Plugin):
                 self._dir_images.append(f)
 
     def handleDirectory(self, d, _):
-        '''Override to make use of ``self._file_cache``. By default the list
+        """Override to make use of ``self._file_cache``. By default the list
         is cleared, subclasses should consider doing the same otherwise every
-        AudioFile will be cached.'''
+        AudioFile will be cached."""
         if self._file_cache is not None:
             self._file_cache = []
 
