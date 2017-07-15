@@ -12,7 +12,7 @@ Vcs-Git: https://github.com/gaetano-guerriero/eyeD3-debian.git
 Package: python-eyed3
 Architecture: all
 Section: python
-Depends: ${misc:Depends}, ${python:Depends}
+Depends: ${misc:Depends}, ${python:Depends}, python-pathlib
 Provides: ${python:Provides}
 Description: Python module for id3-tags manipulation
  A Python module for the manipulation of ID3 tags. It supports versions
