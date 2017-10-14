@@ -1,66 +1,73 @@
 # -*- coding: utf-8 -*-
-################################################################################
-#  Copyright (C) 2012  Travis Shirk <travis@pobox.com>
-#
-#  This program is free software; you can redistribute it and/or modify
-#  it under the terms of the GNU General Public License as published by
-#  the Free Software Foundation; either version 2 of the License, or
-#  (at your option) any later version.
-#
-#  This program is distributed in the hope that it will be useful,
-#  but WITHOUT ANY WARRANTY; without even the implied warranty of
-#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#  GNU General Public License for more details.
-#
-#  You should have received a copy of the GNU General Public License
-#  along with this program; if not, see <http://www.gnu.org/licenses/>.
-#
-################################################################################
-import sys
-from nose.tools import *
+import os
+import pytest
 import eyed3.utils.console
 from eyed3.utils import guessMimetype
 from eyed3.utils.console import (printMsg, printWarning, printHeader, Fore,
                                  WARNING_COLOR, HEADER_COLOR)
-from . import RedirectStdStreams
+from . import DATA_D, RedirectStdStreams
 
 
-def testId3MimeTypes():
-    for ext in ("id3", "tag"):
-        mt = guessMimetype("example.%s" % ext)
-        assert_equal(mt, "application/x-id3")
+@pytest.mark.skipif(not os.path.exists(DATA_D),
+                    reason="test requires data files")
+@pytest.mark.parametrize(("ext", "valid_types"),
+                         [("id3", ["application/x-id3"]),
+                          ("tag", ["application/x-id3"]),
+                          ("aac", ["audio/x-aac", "audio/x-hx-aac-adts"]),
+                          ("aiff", ["audio/x-aiff"]),
+                          ("amr", ["audio/amr", "application/octet-stream"]),
+                          ("au", ["audio/basic"]),
+                          ("m4a", ["audio/mp4", "audio/x-m4a"]),
+                          ("mka", ["video/x-matroska",
+                                   "application/octet-stream"]),
+                          ("mp3", ["audio/mpeg"]),
+                          ("mp4", ["video/mp4", "audio/x-m4a"]),
+                          ("mpg", ["video/mpeg"]),
+                          ("ogg", ["audio/ogg", "application/ogg"]),
+                          ("ra", ["audio/x-pn-realaudio",
+                                  "application/vnd.rn-realmedia"]),
+                          ("wav", ["audio/x-wav"]),
+                          ("wma", ["audio/x-ms-wma", "video/x-ms-wma",
+                                   "video/x-ms-asf"])])
+def testSampleMimeTypes(ext, valid_types):
+    guessed = guessMimetype(os.path.join(DATA_D, "sample.%s" % ext))
+    if guessed:
+        assert guessed in valid_types
+
 
 def test_printWarning():
     eyed3.utils.console.USE_ANSI = False
     with RedirectStdStreams() as out:
         printWarning("Built To Spill")
-    assert_equal(out.stdout.read(), "Built To Spill\n")
+    assert (out.stdout.read() == "Built To Spill\n")
 
     eyed3.utils.console.USE_ANSI = True
     with RedirectStdStreams() as out:
         printWarning("Built To Spill")
-    assert_equal(out.stdout.read(), "%sBuilt To Spill%s\n" % (WARNING_COLOR(),
+    assert (out.stdout.read() == "%sBuilt To Spill%s\n" % (WARNING_COLOR(),
                                                               Fore.RESET))
+
 
 def test_printMsg():
     eyed3.utils.console.USE_ANSI = False
     with RedirectStdStreams() as out:
         printMsg("EYEHATEGOD")
-    assert_equal(out.stdout.read(), "EYEHATEGOD\n")
+    assert (out.stdout.read() == "EYEHATEGOD\n")
 
     eyed3.utils.console.USE_ANSI = True
     with RedirectStdStreams() as out:
         printMsg("EYEHATEGOD")
-    assert_equal(out.stdout.read(), "EYEHATEGOD\n")
+    assert (out.stdout.read() == "EYEHATEGOD\n")
+
 
 def test_printHeader():
     eyed3.utils.console.USE_ANSI = False
     with RedirectStdStreams() as out:
         printHeader("Furthur")
-    assert_equal(out.stdout.read(), "Furthur\n")
+    assert (out.stdout.read() == "Furthur\n")
 
     eyed3.utils.console.USE_ANSI = True
     with RedirectStdStreams() as out:
         printHeader("Furthur")
-    assert_equal(out.stdout.read(), "%sFurthur%s\n" % (HEADER_COLOR(),
+    assert (out.stdout.read() == "%sFurthur%s\n" % (HEADER_COLOR(),
                                                        Fore.RESET))

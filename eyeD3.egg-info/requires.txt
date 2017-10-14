@@ -1,4 +1,6 @@
 six
+pathlib
+python-magic
 
 [display-plugin]
 grako

@@ -5,8 +5,6 @@
         pypi-release web-release github-release cookiecutter requirements
 SRC_DIRS = ./src/eyed3
 TEST_DIR = ./src/test
-TEMP_DIR ?= ./tmp
-CC_DIR = ${TEMP_DIR}/eyeD3
 NAME ?= Travis Shirk
 EMAIL ?= travis@pobox.com
 GITHUB_USER ?= nicfit
@@ -57,7 +55,6 @@ clean: clean-local clean-build clean-pyc clean-test clean-patch clean-docs
 clean-local:
 	-rm tags
 	-rm all.id3 example.id3
-	-rm -rf tmp/ tmp3/
 
 clean-build:
 	rm -fr build/
@@ -75,7 +72,6 @@ clean-pyc:
 clean-test:
 	rm -fr .tox/
 	rm -f .coverage
-	rm -rf "${CC_DIR}"
 
 clean-patch:
 	find . -name '*.rej' -exec rm -f '{}' \;
@@ -108,6 +104,9 @@ test-data:
 clean-test-data:
 	-rm src/test/data
 	-rm src/test/${TEST_DATA_FILE}
+
+pkg-test-data:
+	 tar czf ./build/${TEST_DATA_FILE} -C ./src/test ./eyeD3-test-data
 
 coverage:
 	pytest --cov=./src/eyed3 \
@@ -165,8 +164,8 @@ changelog:
 	if ! grep "${CHANGELOG_HEADER}" ${CHANGELOG} > /dev/null; then \
 		rm -f ${CHANGELOG}.new; \
 		if test -n "$$last"; then \
-			gitchangelog show --author-format=email \
-			                  --omit-author="travis@pobox.com" $${last}..HEAD |\
+			gitchangelog --author-format=email \
+			             --omit-author="travis@pobox.com" $${last}..HEAD |\
 			  sed "s|^%%version%% .*|${CHANGELOG_HEADER}|" |\
 			  sed '/^.. :changelog:/ r/dev/stdin' ${CHANGELOG} \
 			 > ${CHANGELOG}.new; \
@@ -206,7 +205,7 @@ github-release:
                    --repo ${GITHUB_REPO} --tag ${RELEASE_TAG} \
                    --name "$${name}" $${prerelease}
 	for file in $$(find dist -type f -exec basename {} \;) ; do \
-        echo "FILE: $$file"; \
+        echo "Uploading: $$file"; \
         github-release upload --user "${GITHUB_USER}" --repo ${GITHUB_REPO} \
                    --tag ${RELEASE_TAG} --name $${file} --file dist/$${file}; \
     done
@@ -216,14 +215,12 @@ web-release:
 	    scp -P444 $$f eyed3.nicfit.net:eyeD3-releases/`basename $$f`; \
 	done
 
-
 upload-release: github-release pypi-release web-release
 
 pypi-release:
 	for f in `find dist -type f -name ${PROJECT_NAME}-${VERSION}.tar.gz \
               -o -name \*.egg -o -name \*.whl`; do \
         if test -f $$f ; then \
-            twine register -r ${PYPI_REPO} $$f && \
             twine upload -r ${PYPI_REPO} --skip-existing $$f ; \
         fi \
 	done
@@ -259,12 +256,15 @@ CC_MERGE ?= yes
 CC_OPTS ?= --no-input
 GIT_COMMIT_HOOK = .git/hooks/commit-msg
 cookiecutter:
-	@rm -rf "${CC_DIR}"
-	@if test "${CC_MERGE}" == "no"; then \
-		nicfit cookiecutter ${CC_OPTS} "${TEMP_DIR}"; \
-		git -C "${CC_DIR}" diff; \
-		git -C "${CC_DIR}" status -s -b; \
+	tmp_d=`mktemp -d`; cc_d=$$tmp_d/eyeD3; \
+	if test "${CC_MERGE}" == "no"; then \
+		nicfit cookiecutter ${CC_OPTS} "$${tmp_d}"; \
+		git -C "$$cc_d" diff; \
+		git -C "$$cc_d" status -s -b; \
 	else \
-		nicfit cookiecutter --merge ${CC_OPTS} "${TEMP_DIR}" \
+		nicfit cookiecutter --merge ${CC_OPTS} "$${tmp_d}" \
 		       --extra-merge ${GIT_COMMIT_HOOK} ${GIT_COMMIT_HOOK};\
-	fi
+	fi; \
+	rm -rf $$tmp_d
+
+
