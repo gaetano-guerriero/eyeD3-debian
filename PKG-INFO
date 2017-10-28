@@ -1,12 +1,12 @@
 Metadata-Version: 1.1
 Name: eyeD3
-Version: 0.8.2
+Version: 0.8.3
 Summary: Python audio data toolkit (ID3 and MP3)
 Home-page: http://eyed3.nicfit.net/
 Author: Travis Shirk
 Author-email: travis@pobox.com
 License: GNU GPL v3.0
-Download-URL: https://github.com/nicfit/eyeD3/releases/downloads/v0.8.2/eyeD3-0.8.2.tar.gz
+Download-URL: https://github.com/nicfit/eyeD3/releases/downloads/v0.8.3/eyeD3-0.8.3.tar.gz
 Description-Content-Type: UNKNOWN
 Description: Status
         ------
@@ -123,6 +123,20 @@ Description: Status
         Release History
         ===============
         
+        
+        
+        v0.8.3 (2017-10-22) : So Alone
+        -------------------------------
+        
+        Fix
+        ~~~
+        - Reload and process after tag removals, fixes #102. (PR #103)
+        - Display incorrectly encoded strings (usually filenames)
+        
+        Other
+        ~~~~~
+        - Make the classic output span the actual width of the tty so you can
+          see the actual path with a long file name. (#92) <redshodan@gmail.com>
         
         
         v0.8.2 (2017-09-23) : Standing At the Station
