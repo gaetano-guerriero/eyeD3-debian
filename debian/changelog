@@ -1,7 +1,10 @@
 eyed3 (0.8.2-1) UNRELEASED; urgency=low
 
+  * New upstream version
   * Update Standards-Version to 4.1.1, no changes needed.
   * Drop patch fix-manpage-typo (fixed upstream)
+  * Add patch support-debian-python-magic to use debian version of
+    magic module
   
  -- Gaetano Guerriero <x.guerriero@tin.it>  Sat, 22 Jul 2017 00:14:04 +0200
 
