@@ -1,0 +1,8 @@
+Tests: base_script
+Depends: eyed3
+
+Test-Command: set -e ; for py in $(pyversions -r 2>/dev/null) ; do cd "$ADTTMP" ; echo "Testing with $py:" ; $py -c "import eyed3; print eyed3" ; done
+Depends: python-all, python-eyed3
+
+Test-Command: set -e ; for py in $(py3versions -r 2>/dev/null) ; do cd "$ADTTMP" ; echo "Testing with $py:" ; $py -c "import eyed3; print(eyed3)" ; done
+Depends: python3-all, python3-eyed3

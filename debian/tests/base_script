@@ -1,0 +1,5 @@
+#!/bin/sh
+# autopkgtest check: Check base functionality of eyed3 binary
+
+[ "`eyeD3 --version 2>&1`" = '0.8.3' ] || (
+    echo "FAIL: Unexpected --version response" ; exit 1)

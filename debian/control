@@ -10,6 +10,7 @@ Standards-Version: 4.1.1
 X-Python-Version: >=2.7
 Vcs-Browser: https://github.com/gaetano-guerriero/eyeD3-debian
 Vcs-Git: https://github.com/gaetano-guerriero/eyeD3-debian.git
+Testsuite: autopkgtest
 
 Package: python-eyed3
 Architecture: all
@@ -39,7 +40,8 @@ Description: Python module for id3-tags manipulation
 
 Package: eyed3
 Architecture: all
-Depends: python-eyed3 (= ${source:Version}), ${python:Depends}, ${misc:Depends}
+Depends: python-eyed3 (= ${source:Version}), ${python:Depends}, ${misc:Depends},
+         python-pkg-resources
 Description: Display and manipulate id3-tags on the command-line
  A command-line editor to add/edit/remove ID3-tags on mp3 files.
  It supports version 1.0,1.1,2.3 and 2.4 of the ID3 standard.
