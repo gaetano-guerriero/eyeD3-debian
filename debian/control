@@ -17,7 +17,7 @@ Architecture: all
 Section: python
 Depends: ${misc:Depends}, ${python:Depends}, python-pathlib
 Provides: ${python:Provides}
-Description: Python module for id3-tags manipulation
+Description: Python module for id3-tags manipulation (Python 2 version)
  A Python module for the manipulation of ID3 tags. It supports versions
  1.0, 1.1, 2.3, and 2.4 of the ID3 standard. It can also retrieve
  information such as length and bit rate from an MP3 file.
@@ -30,7 +30,7 @@ Architecture: all
 Section: python
 Depends: ${misc:Depends}, ${python3:Depends}
 Provides: ${python:Provides}
-Description: Python module for id3-tags manipulation
+Description: Python module for id3-tags manipulation (Python 3 version)
  A Python module for the manipulation of ID3 tags. It supports versions
  1.0, 1.1, 2.3, and 2.4 of the ID3 standard. It can also retrieve
  information such as length and bit rate from an MP3 file.
