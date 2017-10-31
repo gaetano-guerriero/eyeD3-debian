@@ -1,15 +1,17 @@
-eyed3 (0.8.3-1) UNRELEASED; urgency=low
+eyed3 (0.8.3-1) unstable; urgency=low
 
   * New upstream version
-  * Build also package for python3
+  * Build also the library package for python3
   * Drop patch fix-manpage-typo (fixed upstream)
   * Add patch support-debian-python-magic to use debian version of
     magic module
   * Add autopkgtest configuration
   * Update Standards-Version to 4.1.1, no changes needed.
 
+  * Upload sponsored by Petter Reinholdtsen.
+
   
- -- Gaetano Guerriero <x.guerriero@tin.it>  Sat, 22 Jul 2017 00:14:04 +0200
+ -- Gaetano Guerriero <x.guerriero@tin.it>  Tue, 31 Oct 2017 20:31:25 +0100
 
 eyed3 (0.8-1) unstable; urgency=low
 
