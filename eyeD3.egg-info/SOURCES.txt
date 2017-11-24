@@ -41,6 +41,7 @@ tox.ini
 ./src/eyed3/utils/log.py
 ./src/eyed3/utils/prompt.py
 docs/Makefile
+docs/_config.yml
 docs/authors.rst
 docs/cli.rst
 docs/compliance.rst
@@ -134,6 +135,7 @@ src/test/test_display_plugin.py
 src/test/test_factory.py
 src/test/test_main.py
 src/test/test_plugins.py
+src/test/test_stats_plugins.py
 src/test/test_utils.py
 src/test/id3/__init__.py
 src/test/id3/test_frames.py

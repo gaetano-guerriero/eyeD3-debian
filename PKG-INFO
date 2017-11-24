@@ -1,12 +1,12 @@
 Metadata-Version: 1.1
 Name: eyeD3
-Version: 0.8.3
+Version: 0.8.4
 Summary: Python audio data toolkit (ID3 and MP3)
 Home-page: http://eyed3.nicfit.net/
 Author: Travis Shirk
 Author-email: travis@pobox.com
 License: GNU GPL v3.0
-Download-URL: https://github.com/nicfit/eyeD3/releases/downloads/v0.8.3/eyeD3-0.8.3.tar.gz
+Download-URL: https://github.com/nicfit/eyeD3/releases/downloads/v0.8.4/eyeD3-0.8.4.tar.gz
 Description-Content-Type: UNKNOWN
 Description: Status
         ------
@@ -123,6 +123,43 @@ Description: Status
         Release History
         ===============
         
+        
+        
+        v0.8.4 (2017-11-17) : The Cold Vein
+        -------------------------------------
+        
+        New
+        ~~~
+        - Composer (TCOM) support (#123)
+        - Check for version incompatibilities during version changes.
+        
+        Changes
+        ~~~~~~~
+        - More forgiving of invalid text encoding identifiers (fixes #101)
+        - More forgiving of bad Unicode in text frames (fixes #105)
+        - EyeD3 cmd line helper turned not session-scoped fixture.
+        - Only warn about missing grako when the plugin is used. Fixes #115.
+        
+        Fix
+        ~~~
+        - Fix python3 setup when system encoding is not utf-8 (#120)
+          <x.guerriero@tin.it>
+        - Fix bad frames detection in stats plugin for python3 (#113)
+          <x.guerriero@tin.it>
+        - Script exits with 0 status when called with --version/--help (#109)
+          <x.guerriero@tin.it>
+        - Help pymagic with poorly encoded filenames.
+        - [display plugin] Handle comments.
+        - [display plugin] Handle internal exception types. Fixes #118.
+        - IOError (nor OSError) have a message attr.
+        
+        Other
+        ~~~~~
+        - Set theme jekyll-theme-slate.
+        - Update pytest to 3.2.5 (#122) <github-bot@pyup.io>
+        - Update pytest-runner to 3.0 (#108) <github-bot@pyup.io>
+        - Update sphinx to 1.6.5 (#106) <github-bot@pyup.io>
+        - Update flake8 to 3.5.0 (#107) <github-bot@pyup.io>
         
         
         v0.8.3 (2017-10-22) : So Alone
