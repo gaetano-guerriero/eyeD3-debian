@@ -2,7 +2,7 @@ Support debian version of python-magic along with pypi python-magic used
 upstream.
 --- a/src/eyed3/utils/__init__.py
 +++ b/src/eyed3/utils/__init__.py
-@@ -35,15 +35,28 @@
+@@ -35,19 +35,37 @@
  ID3_MIME_TYPE_EXTENSIONS = (".id3", ".tag")
  
  
@@ -14,7 +14,16 @@ upstream.
 -    def guess_type(self, filename):
 -        if os.path.splitext(filename)[1] in ID3_MIME_TYPE_EXTENSIONS:
 -            return ID3_MIME_TYPE
--        return self.from_file(filename)
+-        try:
+-            return self.from_file(filename)
+-        except UnicodeEncodeError as enc_err:
++def _retry_with_surrogate_encode(f, arg):
++    try:
++        return f(arg)
++    except UnicodeEncodeError:
++        return f(arg.encode("utf-8", 'surrogateescape'))
++
++
 +# handle magic name conflict
 +if hasattr(magic, 'from_file'):  # pypi python-magic
 +    class MagicTypes(magic.Magic):
@@ -25,7 +34,10 @@ upstream.
 +        def guess_type(self, filename):
 +            if os.path.splitext(filename)[1] in ID3_MIME_TYPE_EXTENSIONS:
 +                return ID3_MIME_TYPE
-+            return self.from_file(filename)
+             # https://github.com/ahupp/python-magic/pull/144
+-            return self.from_file(filename.encode("utf-8", 'surrogateescape'))
++            return _retry_with_surrogate_encode(self.from_file, filename)
++
 +else:                            # debian python-magic
 +    class MagicTypes(object):
 +        def __init__(self):
@@ -36,7 +48,7 @@ upstream.
 +        def guess_type(self, filename):
 +            if os.path.splitext(filename)[1] in ID3_MIME_TYPE_EXTENSIONS:
 +                return ID3_MIME_TYPE
-+            return self._magic.file(filename)
++            return _retry_with_surrogate_encode(self._magic.file, filename)
  
  
  _mime_types = MagicTypes()
