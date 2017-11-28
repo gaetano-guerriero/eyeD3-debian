@@ -2,8 +2,8 @@
 
 export PYBUILD_NAME=eyed3
 
-dstdir := $(CURDIR)/debian/python-eyed3
-dstdir_py3 := $(CURDIR)/debian/python3-eyed3
+py2_dstdir := $(CURDIR)/debian/python-eyed3
+py3_dstdir := $(CURDIR)/debian/python3-eyed3
 eyed3_dstdir := $(CURDIR)/debian/eyed3
 
 
@@ -23,5 +23,5 @@ override_dh_auto_test:
 override_dh_auto_install:
 	dh_auto_install
 	mkdir -p ${eyed3_dstdir}/usr/bin/
-	mv ${dstdir}/usr/bin/eyeD3 ${eyed3_dstdir}/usr/bin/eyeD3
-	rm ${dstdir_py3}/usr/bin/eyeD3
+	mv ${py3_dstdir}/usr/bin/eyeD3 ${eyed3_dstdir}/usr/bin/eyeD3
+	rm ${py2_dstdir}/usr/bin/eyeD3

@@ -1,6 +1,9 @@
 eyed3 (0.8.4-1) UNRELEASED; urgency=low
 
   * New upstream version
+  * Run eyed3 program with python3 (Closes: #878853).
+    This resolves encoding related bugs. (Closes: #466318,
+    Closes: #481678, Closes: #648540)
   * Drop patch fix-setup-py3-encoding (applied upstream)
 
   * Upload sponsored by Petter Reinholdtsen.
