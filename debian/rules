@@ -6,8 +6,15 @@ dstdir := $(CURDIR)/debian/python-eyed3
 dstdir_py3 := $(CURDIR)/debian/python3-eyed3
 eyed3_dstdir := $(CURDIR)/debian/eyed3
 
+
 %:
 	dh $@ --with python2,python3 --buildsystem=pybuild
+
+
+override_dh_installchangelogs:
+	dh_installchangelogs -p eyed3 HISTORY.rst
+	dh_installchangelogs -p python3-eyed3 HISTORY.rst
+	dh_installchangelogs -p python-eyed3 HISTORY.rst
 
 
 override_dh_auto_test:
