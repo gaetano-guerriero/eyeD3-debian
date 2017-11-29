@@ -13,8 +13,8 @@ eyed3_dstdir := $(CURDIR)/debian/eyed3
 
 override_dh_installchangelogs:
 	dh_installchangelogs -p eyed3 HISTORY.rst
-	dh_installchangelogs -p python3-eyed3 HISTORY.rst
-	dh_installchangelogs -p python-eyed3 HISTORY.rst
+	dh_installchangelogs -p python3-eyed3 -X history.rst -X HISTORY.rst
+	dh_installchangelogs -p python-eyed3 -X history.rst -X HISTORY.rst
 
 
 override_dh_auto_test:
