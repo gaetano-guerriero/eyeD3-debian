@@ -1,4 +1,4 @@
-eyed3 (0.8.4-1) UNRELEASED; urgency=low
+eyed3 (0.8.4-1) unstable; urgency=low
 
   * New upstream version
   * Run eyed3 program with python3 (Closes: #878853).
@@ -8,7 +8,7 @@ eyed3 (0.8.4-1) UNRELEASED; urgency=low
 
   * Upload sponsored by Petter Reinholdtsen.
 
- -- Gaetano Guerriero <x.guerriero@tin.it>  Fri, 24 Nov 2017 18:54:17 +0100
+ -- Gaetano Guerriero <x.guerriero@tin.it>  Wed, 29 Nov 2017 22:42:54 +0100
 
 eyed3 (0.8.3-2) unstable; urgency=medium
 
