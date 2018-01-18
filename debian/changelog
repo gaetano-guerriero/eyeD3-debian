@@ -1,10 +1,12 @@
-eyed3 (0.8.4-2) UNRELEASED; urgency=medium
+eyed3 (0.8.4-2) unstable; urgency=medium
 
   * Handle symlink to directory conversion of docs directories
     (Closes: #886946)
-  * Update Standards-Version to 4.1.2, no changes needed.
+  * Update Standards-Version to 4.1.2, no changes needed
 
- -- Gaetano Guerriero <x.guerriero@tin.it>  Thu, 18 Jan 2018 23:26:59 +0100
+  * Upload sponsored by Petter Reinholdtsen.
+
+ -- Gaetano Guerriero <x.guerriero@tin.it>  Fri, 19 Jan 2018 00:19:54 +0100
 
 eyed3 (0.8.4-1) unstable; urgency=low
 
