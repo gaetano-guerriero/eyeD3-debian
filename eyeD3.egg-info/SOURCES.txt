@@ -30,6 +30,7 @@ tox.ini
 ./src/eyed3/plugins/genres.py
 ./src/eyed3/plugins/itunes.py
 ./src/eyed3/plugins/lameinfo.py
+./src/eyed3/plugins/lastfm.py
 ./src/eyed3/plugins/nfo.py
 ./src/eyed3/plugins/pymod.py
 ./src/eyed3/plugins/stats.py
@@ -87,6 +88,7 @@ eyeD3.egg-info/not-zip-safe
 eyeD3.egg-info/requires.txt
 eyeD3.egg-info/top_level.txt
 requirements/dev.txt
+requirements/extra_art-plugin.txt
 requirements/extra_display-plugin.txt
 requirements/main.txt
 requirements/requirements.yml
@@ -114,6 +116,7 @@ src/eyed3/plugins/fixup.py
 src/eyed3/plugins/genres.py
 src/eyed3/plugins/itunes.py
 src/eyed3/plugins/lameinfo.py
+src/eyed3/plugins/lastfm.py
 src/eyed3/plugins/nfo.py
 src/eyed3/plugins/pymod.py
 src/eyed3/plugins/stats.py

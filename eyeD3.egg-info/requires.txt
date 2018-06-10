@@ -2,5 +2,10 @@ six
 pathlib
 python-magic
 
+[art-plugin]
+pylast
+requests
+pillow
+
 [display-plugin]
 grako
