@@ -1,12 +1,12 @@
 Metadata-Version: 2.1
 Name: eyeD3
-Version: 0.8.6
+Version: 0.8.7
 Summary: Python audio data toolkit (ID3 and MP3)
 Home-page: http://eyed3.nicfit.net/
 Author: Travis Shirk
 Author-email: travis@pobox.com
 License: GNU GPL v3.0
-Download-URL: https://github.com/nicfit/eyeD3/releases/downloads/v0.8.6/eyeD3-0.8.6.tar.gz
+Download-URL: https://github.com/nicfit/eyeD3/releases/downloads/v0.8.7/eyeD3-0.8.7.tar.gz
 Description: Status
         ------
         .. image:: https://img.shields.io/pypi/v/eyeD3.svg
