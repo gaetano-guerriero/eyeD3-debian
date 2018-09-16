@@ -14,6 +14,7 @@ Package: python-eyed3
 Architecture: all
 Section: python
 Depends: ${misc:Depends}, ${python:Depends}, python-pathlib
+Suggests: ${python:Suggests}
 Provides: ${python:Provides}
 Description: Python module for id3-tags manipulation (Python 2 version)
  A Python module for the manipulation of ID3 tags. It supports versions
@@ -27,6 +28,7 @@ Package: python3-eyed3
 Architecture: all
 Section: python
 Depends: ${misc:Depends}, ${python3:Depends}
+Suggests: ${python3:Suggests}
 Provides: ${python:Provides}
 Description: Python module for id3-tags manipulation (Python 3 version)
  A Python module for the manipulation of ID3 tags. It supports versions

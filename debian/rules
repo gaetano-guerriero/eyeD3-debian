@@ -11,6 +11,14 @@ eyed3_dstdir := $(CURDIR)/debian/eyed3
 	dh $@ --with python2,python3 --buildsystem=pybuild
 
 
+override_dh_python3:
+	dh_python3 --suggests-section=art-plugin
+
+
+override_dh_python2:
+	dh_python2 --suggests-section=art-plugin
+
+
 override_dh_installchangelogs:
 	dh_installchangelogs -p eyed3 HISTORY.rst
 	dh_installchangelogs -p python3-eyed3 -X history.rst -X HISTORY.rst
