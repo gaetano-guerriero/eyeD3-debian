@@ -1,7 +1,7 @@
 #!/bin/sh
 # autopkgtest check: Check base functionality of eyed3 binary
 
-if ! eyeD3 --version >/dev/null; then
+if ! eyeD3 --version >/dev/null 2>&1; then
     echo "FAIL: eyeD3 --version failed"
     exit 1
 fi
