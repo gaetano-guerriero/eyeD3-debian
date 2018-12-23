@@ -1,0 +1,31 @@
+language: python
+
+python:
+  - "3.6"
+  - "2.7"
+  - "3.5"
+  - "3.4"
+  - "3.7-dev"
+  - "pypy3"
+  - "pypy"
+
+cache:
+    pip: true
+    directories:
+        - $HOME/eyeD3-test-data
+
+install:
+    - pip install -U -r requirements.txt
+    - pip install -U -r requirements/test.txt
+    - pip install coveralls
+    - pip install -e .
+    - make TEST_DATA_DIR=$HOME test-data
+    - test $(python -c 'import sys;print("{}{}".format(sys.version_info.major, sys.version_info.minor))') -gt 33 || pip install -r requirements/test_py33.txt
+
+# command to run tests
+script: make coverage
+
+after_success:
+  - coveralls
+
+

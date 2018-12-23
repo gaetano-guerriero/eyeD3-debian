@@ -1,11 +1,11 @@
-eyed3 (0.8.7-2) unstable; urgency=low
+eyed3 (0.8.8-1) UNRELEASED; urgency=low
 
   * Update Standards-Version to 4.3.0, no changes needed
   * Use debhelper compatibility version 10, no changes needed
   * Use github as watch url, in order to avoid unsecure protocol
 
 
- --
+ -- Gaetano Guerriero <x.guerriero@tin.it>  Sun, 23 Dec 2018 19:22:19 +0100
 
 eyed3 (0.8.7-1) unstable; urgency=medium
 
