@@ -1,6 +1,7 @@
 eyed3 (0.8.7-2) unstable; urgency=low
 
   * Update Standards-Version to 4.3.0, no changes needed
+  * Use debhelper compatibility version 10, no changes needed
 
 
  --
