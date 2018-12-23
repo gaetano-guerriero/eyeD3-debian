@@ -2,7 +2,7 @@ Support debian version of python-magic along with pypi python-magic used
 upstream.
 --- a/src/eyed3/utils/__init__.py
 +++ b/src/eyed3/utils/__init__.py
-@@ -35,19 +35,37 @@
+@@ -48,19 +48,37 @@
  ID3_MIME_TYPE_EXTENSIONS = (".id3", ".tag")
  
  
@@ -16,7 +16,7 @@ upstream.
 -            return ID3_MIME_TYPE
 -        try:
 -            return self.from_file(filename)
--        except UnicodeEncodeError as enc_err:
+-        except UnicodeEncodeError:
 +def _retry_with_surrogate_encode(f, arg):
 +    try:
 +        return f(arg)
