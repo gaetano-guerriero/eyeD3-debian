@@ -1,3 +1,10 @@
+eyed3 (0.8.7-2) unstable; urgency=low
+
+  * Update Standards-Version to 4.3.0, no changes needed
+
+
+ --
+
 eyed3 (0.8.7-1) unstable; urgency=medium
 
   * New upstream version
