@@ -34,3 +34,6 @@ and has been contributed to by (ordered by date of first contribution):
   * Chris Newton <redshodan@gmail.com>
   * deoren@users.noreply.github.com
   * chamatht@gmail.com
+  * Mic92@users.noreply.github.com
+  * gabrieldiegoteixeira@gmail.com
+  * guillaume.web@gmail.com
