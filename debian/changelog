@@ -1,4 +1,4 @@
-eyed3 (0.8.10-1) UNRELEASED; urgency=medium
+eyed3 (0.8.10-1) unstable; urgency=medium
 
   * New upstream version
     (Closes: #481002)
@@ -6,7 +6,7 @@ eyed3 (0.8.10-1) UNRELEASED; urgency=medium
 
   * Upload sponsored by Petter Reinholdtsen.
 
- -- Gaetano Guerriero <x.guerriero@tin.it>  Thu, 22 Aug 2019 15:33:52 +0200
+ -- Gaetano Guerriero <x.guerriero@tin.it>  Thu, 22 Aug 2019 21:23:37 +0200
 
 eyed3 (0.8.8-1) unstable; urgency=low
 
