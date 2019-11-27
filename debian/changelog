@@ -1,7 +1,10 @@
 eyed3 (0.8.10-2) UNRELEASED; urgency=low
 
+  * Add patch to support pylast 3, backported from upstream
+    (Closes: #945371)
   * Fix patch remove-display-plugin to really disable the plugin
     (Closes: #988738)
+
  -- Gaetano Guerriero <x.guerriero@tin.it>  Wed, 27 Nov 2019 10:21:11 +0100
 
 eyed3 (0.8.10-1.1) unstable; urgency=medium
