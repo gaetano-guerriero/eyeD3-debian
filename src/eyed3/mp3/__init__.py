@@ -1,20 +1,3 @@
-################################################################################
-#  Copyright (C) 2002-2007  Travis Shirk <travis@pobox.com>
-#
-#  This program is free software; you can redistribute it and/or modify
-#  it under the terms of the GNU General Public License as published by
-#  the Free Software Foundation; either version 2 of the License, or
-#  (at your option) any later version.
-#
-#  This program is distributed in the hope that it will be useful,
-#  but WITHOUT ANY WARRANTY; without even the implied warranty of
-#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#  GNU General Public License for more details.
-#
-#  You should have received a copy of the GNU General Public License
-#  along with this program; if not, see <http://www.gnu.org/licenses/>.
-#
-################################################################################
 import os
 import re
 
@@ -65,12 +48,13 @@ class Mp3AudioInfo(core.AudioInfo):
         self.mp3_header = None
         self.xing_header = None
         self.vbri_header = None
+        # If not ``None``, the Lame header.
+        # See :class:`eyed3.mp3.headers.LameHeader`
         self.lame_tag = None
-        '''If not ``None``, the Lame header.
-        See :class:`eyed3.mp3.headers.LameHeader`'''
+        # 2-tuple, (vrb?:boolean, bitrate:int)
         self.bit_rate = (None, None)
-        '''2-tuple, (vrb?:boolean, bitrate:int)'''
 
+        header_pos = 0
         while self.mp3_header is None:
             # Find first mp3 header
             (header_pos,
@@ -116,7 +100,6 @@ class Mp3AudioInfo(core.AudioInfo):
         self.size_bytes = os.stat(file_obj.name)[stat.ST_SIZE]
 
         # Compute track play time.
-        tpf = None
         if self.xing_header and self.xing_header.vbr:
             tpf = timePerFrame(self.mp3_header, True)
             self.time_secs = tpf * self.xing_header.numFrames
@@ -138,8 +121,7 @@ class Mp3AudioInfo(core.AudioInfo):
 
         # Compute bitate
         if (self.xing_header and self.xing_header.vbr and
-                self.xing_header.numFrames):    # if xing_header.numFrames == 0
-                                                # ZeroDivisionError
+                self.xing_header.numFrames):  # if xing_header.numFrames == 0, ZeroDivisionError
             br = int((self.xing_header.numBytes * 8) /
                      (tpf * self.xing_header.numFrames * 1000))
             vbr = True
