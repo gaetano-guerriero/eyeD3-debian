@@ -2,27 +2,21 @@
 
 export PYBUILD_NAME=eyed3
 
-py2_dstdir := $(CURDIR)/debian/python-eyed3
 py3_dstdir := $(CURDIR)/debian/python3-eyed3
 eyed3_dstdir := $(CURDIR)/debian/eyed3
 
 
 %:
-	dh $@ --with python2,python3 --buildsystem=pybuild
+	dh $@ --with python3 --buildsystem=pybuild
 
 
 override_dh_python3:
 	dh_python3 --suggests-section=art-plugin
 
 
-override_dh_python2:
-	dh_python2 --suggests-section=art-plugin
-
-
 override_dh_installchangelogs:
 	dh_installchangelogs -p eyed3 HISTORY.rst
 	dh_installchangelogs -p python3-eyed3 -X history.rst -X HISTORY.rst
-	dh_installchangelogs -p python-eyed3 -X history.rst -X HISTORY.rst
 
 
 override_dh_auto_test:
@@ -32,4 +26,3 @@ override_dh_auto_install:
 	dh_auto_install
 	mkdir -p ${eyed3_dstdir}/usr/bin/
 	mv ${py3_dstdir}/usr/bin/eyeD3 ${eyed3_dstdir}/usr/bin/eyeD3
-	rm ${py2_dstdir}/usr/bin/eyeD3

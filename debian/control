@@ -3,33 +3,18 @@ Section: sound
 Priority: optional
 Maintainer: Gaetano Guerriero <x.guerriero@tin.it>
 Build-Depends: debhelper (>= 10), dh-python,
-               python-all, python-setuptools,
                python3, python3-setuptools
 Homepage: http://eyed3.nicfit.net/
 Standards-Version: 4.4.0
 Vcs-Browser: https://github.com/gaetano-guerriero/eyeD3-debian
 Vcs-Git: https://github.com/gaetano-guerriero/eyeD3-debian.git
 
-Package: python-eyed3
-Architecture: all
-Section: python
-Depends: ${misc:Depends}, ${python:Depends}, python-pathlib
-Suggests: ${python:Suggests}
-Provides: ${python:Provides}
-Description: Python module for id3-tags manipulation (Python 2 version)
- A Python module for the manipulation of ID3 tags. It supports versions
- 1.0, 1.1, 2.3, and 2.4 of the ID3 standard. It can also retrieve
- information such as length and bit rate from an MP3 file.
- .
- This is the Python 2 version of the package.
-
-
 Package: python3-eyed3
 Architecture: all
 Section: python
 Depends: ${misc:Depends}, ${python3:Depends}
 Suggests: ${python3:Suggests}
-Provides: ${python:Provides}
+Provides: ${python3:Provides}
 Description: Python module for id3-tags manipulation (Python 3 version)
  A Python module for the manipulation of ID3 tags. It supports versions
  1.0, 1.1, 2.3, and 2.4 of the ID3 standard. It can also retrieve
