@@ -4,6 +4,7 @@ eyed3 (0.8.10-2) UNRELEASED; urgency=low
     (Closes: #945371)
   * Fix patch remove-display-plugin to really disable the plugin
     (Closes: #988738)
+  * Add Restrictions: superficial to autopkgtest tests (Closes: #974444)
 
  -- Gaetano Guerriero <x.guerriero@tin.it>  Wed, 27 Nov 2019 10:21:11 +0100
 
