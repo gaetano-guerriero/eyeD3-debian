@@ -1,3 +1,9 @@
+eyed3 (0.8.10-2) UNRELEASED; urgency=low
+
+  * Fix patch remove-display-plugin to really disable the plugin
+    (Closes: #988738)
+ -- Gaetano Guerriero <x.guerriero@tin.it>  Wed, 27 Nov 2019 10:21:11 +0100
+
 eyed3 (0.8.10-1.1) unstable; urgency=medium
 
   * Non-maintainer upload.
