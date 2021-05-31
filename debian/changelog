@@ -1,4 +1,4 @@
-eyed3 (0.8.10-2) UNRELEASED; urgency=low
+eyed3 (0.8.10-2) unstable; urgency=medium
 
   * Add patch to support pylast 3, backported from upstream
     (Closes: #945371)
@@ -6,7 +6,9 @@ eyed3 (0.8.10-2) UNRELEASED; urgency=low
     (Closes: #988738)
   * Add Restrictions: superficial to autopkgtest tests (Closes: #974444)
 
- -- Gaetano Guerriero <x.guerriero@tin.it>  Wed, 27 Nov 2019 10:21:11 +0100
+  * Upload sponsored by Petter Reinholdtsen.
+
+ -- Gaetano Guerriero <x.guerriero@tin.it>  Mon, 31 May 2021 15:02:53 +0200
 
 eyed3 (0.8.10-1.1) unstable; urgency=medium
 
