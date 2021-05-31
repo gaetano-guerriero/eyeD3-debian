@@ -1,0 +1,28 @@
+#!/bin/sh
+# autopkgtest check: Generate an .id3 file and read it back using eyed3 program
+set -e
+
+# create an empty .id3 file
+tmpdir="${AUTOPKGTEST_TMP:-/tmp}"
+id3file="$tmpdir"/cmd-id3-file-input-output.id3
+> "$id3file"
+
+# write some ID3 tags into the file
+eyeD3 >/dev/null -Q\
+      -a artist \
+      -A album \
+      -t title \
+      -Y 2021 \
+      -n 42 "$id3file" 
+
+# read back written tags
+output=$(eyeD3 "$id3file")
+
+# test tags are found inoutput
+test "${output#*artist: artist}" != "$output" || (echo 'ERROR: artist not found in written tags'; exit 1)
+test "${output#*album: album}" != "$output" || (echo 'ERROR: album not found in written tags'; exit 1)
+test "${output#*title: title}" != "$output" || (echo 'ERROR: title not found in written tags'; exit 1)
+test "${output#*release date: 2021}" != "$output" || (echo 'ERROR: year not found in written tags'; exit 1)
+test "${output#*track: 42}" != "$output" || (echo 'ERROR: track not found in written tags'; exit 1)
+
+

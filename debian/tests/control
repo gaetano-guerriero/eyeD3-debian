@@ -5,3 +5,9 @@ Restrictions: superficial
 Test-Command: set -e ; for py in $(py3versions -r 2>/dev/null) ; do cd "$ADTTMP" ; echo "Testing with $py:" ; $py -c "import eyed3; print(eyed3)" ; done
 Depends: python3-all, python3-eyed3
 Restrictions: superficial
+
+Tests: cmd-id3-file-input-output
+Depends: eyed3
+
+Tests: lib-id3-file-input-output
+Depends: eyed3

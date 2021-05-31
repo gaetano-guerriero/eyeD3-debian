@@ -1,0 +1,42 @@
+#!/usr/bin/python3
+# autopkgtest check: Generate an .id3 file and read it back using python-eyed3 library
+
+import os
+import datetime
+import pathlib
+
+import eyed3
+import eyed3.id3
+import eyed3.core
+
+tmpdir = os.environ.get("AUTOPKGTEST_TMP") or "/tmp"
+tmpf = pathlib.Path(tmpdir) / "lib-id3-file-input-output.id3"
+
+
+def generate_id3_file(path):
+    with open(path, "wb"):
+        pass
+    f = eyed3.load(path)
+    f.initTag()
+
+    f.tag.artist = "artist"
+    f.tag.album = "album"
+    f.tag.title = "title"
+    f.tag.release_date = eyed3.core.Date(2021)
+    f.tag.track_num = (42, None)
+
+    f.tag.save()
+
+
+def test_id3_file(path):
+    f = eyed3.load(path)
+    assert f.tag.artist == "artist"
+    assert f.tag.album == "album"
+    assert f.tag.title == "title"
+    assert f.tag.release_date == eyed3.core.Date(2021)
+    assert f.tag.track_num == (42, None)
+
+
+if __name__ == "__main__":
+    generate_id3_file(tmpf)
+    test_id3_file(tmpf)
