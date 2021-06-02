@@ -1,3 +1,11 @@
+eyed3 (0.8.10-4) unstable; urgency=medium
+
+  * Source only upload, to recover from previous binary upload.
+
+  * Upload sponsored by Petter Reinholdtsen.
+
+ -- Gaetano Guerriero <x.guerriero@tin.it>  Wed, 02 Jun 2021 07:13:19 +0200
+
 eyed3 (0.8.10-3) unstable; urgency=medium
 
   * Fix autopkgtest generating sometimes output on stderr (Closes: #989356)
