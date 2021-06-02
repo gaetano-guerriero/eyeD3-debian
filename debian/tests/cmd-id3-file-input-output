@@ -8,7 +8,7 @@ id3file="$tmpdir"/cmd-id3-file-input-output.id3
 > "$id3file"
 
 # write some ID3 tags into the file
-eyeD3 >/dev/null -Q\
+eyeD3 >/dev/null 2>&1 -Q\
       -a artist \
       -A album \
       -t title \
@@ -16,7 +16,7 @@ eyeD3 >/dev/null -Q\
       -n 42 "$id3file" 
 
 # read back written tags
-output=$(eyeD3 "$id3file")
+output=$(eyeD3 2>/dev/null "$id3file")
 
 # test tags are found inoutput
 test "${output#*artist: artist}" != "$output" || (echo 'ERROR: artist not found in written tags'; exit 1)
