@@ -63,11 +63,11 @@ The same can be accomplished using Python.
   import eyed3
 
   audiofile = eyed3.load("song.mp3")
-  audiofile.tag.artist = u"Integrity"
-  audiofile.tag.album = u"Humanity Is The Devil"
-  audiofile.tag.album_artist = u"Integrity"
-  audiofile.tag.title = u"Hollow"
-  audiofile.tag.track_num = 2
+  audiofile.tag.artist = "Token Entry"
+  audiofile.tag.album = "Free For All Comp LP"
+  audiofile.tag.album_artist = "Various Artists"
+  audiofile.tag.title = "The Edge"
+  audiofile.tag.track_num = 3
 
   audiofile.tag.save()
 
@@ -77,22 +77,22 @@ version 3 of the GPL_.
 Features
 --------
 
-* Python package for writing application and/or plugins.
-* Command-line tool driver script that supports plugins.
-  viewer/editor interface.
-* Easy editing/viewing of audio metadata from the command-line, using the
-  'classic' plugin.
+* Python package (`import eyed3`) for writing applications and plugins.
+* `eyeD3` : Command-line tool driver script that supports plugins.
+* Easy ID3 editing/viewing of audio metadata from the command-line.
+* Plugins for: Tag to string formatting (display), album fixing (fixup),
+  cover art downloading (art), collection stats (stats),
+  and json/yaml/jabber/nfo output formats, and more included.
 * Support for ID3 versions 1.x, 2.2 (read-only), 2.3, and 2.4.
 * Support for the MP3 audio format exposing details such as play time, bit
   rate, sampling frequency, etc.
 * Abstract design allowing future support for different audio formats and
   metadata containers.
 
-
 Get Started
 -----------
 
-Python 2.7, >= 3.4 is required.
+Python >= 3.6 is required.
 
 For `installation instructions`_ or more complete `documentation`_ see
 http://eyeD3.nicfit.net/
@@ -101,7 +101,7 @@ Please post feedback and/or defects on the `issue tracker`_, or `mailing list`_.
 
 .. _eyeD3: http://eyeD3.nicfit.net/
 .. _Travis Shirk: travis@pobox.com
-.. _issue tracker: https://bitbucket.org/nicfit/eyed3/issues?status=new&status=open
+.. _issue tracker: https://github.com/nicfit/eyeD3/issues
 .. _mailing list: https://groups.google.com/forum/?fromgroups#!forum/eyed3-users
 .. _installation instructions: http://eyeD3.nicfit.net/index.html#installation
 .. _documentation: http://eyeD3.nicfit.net/index.html#documentation

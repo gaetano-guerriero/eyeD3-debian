@@ -14,9 +14,8 @@ pymod
 Description
 -----------
 
-If no module if provided (see -m/--module) a file named eyeD3mod.py in
-the current working directory is imported. If any of the following methods
-exist they still be invoked:
+If no module if provided a file named eyeD3mod.py in the current working directory is
+imported. If any of the following methods exist they still be invoked:
 
 def audioFile(audio_file):
     '''Invoked for every audio file that is encountered. The ``audio_file``
@@ -39,8 +38,7 @@ Options
 .. code-block:: text
 
     -m MODULE, --module MODULE
-                          The Python module module to invoke. The default is
-                          ./eyeD3mod.py
+                          The Python module module to invoke. The default is ./eyeD3mod.py
 
 
 .. {{{end}}}
