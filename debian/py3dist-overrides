@@ -1,2 +1,3 @@
 python_magic python3-magic
-pathlib python3
+pathlib
+dataclasses
