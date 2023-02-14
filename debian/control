@@ -5,7 +5,7 @@ Maintainer: Gaetano Guerriero <x.guerriero@tin.it>
 Build-Depends: debhelper (>= 10), dh-python,
                python3, python3-setuptools
 Homepage: http://eyed3.nicfit.net/
-Standards-Version: 4.4.0
+Standards-Version: 4.6.1
 Vcs-Browser: https://github.com/gaetano-guerriero/eyeD3-debian
 Vcs-Git: https://github.com/gaetano-guerriero/eyeD3-debian.git
 
