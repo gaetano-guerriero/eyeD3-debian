@@ -7,6 +7,8 @@ eyed3 (0.9.6-1) UNRELEASED; urgency=low
   * Update Standards-Version to 4.6.1, no changes needed
   * Drop patch support-pylast-3
     python pylast 4 is now supported upstream
+  * Drop patch remove-display-plugin
+    Plugin has been removed upstream
 
  -- Gaetano Guerriero <x.guerriero@tin.it>  Thu, 23 Dec 2021 10:28:07 +0100
 
