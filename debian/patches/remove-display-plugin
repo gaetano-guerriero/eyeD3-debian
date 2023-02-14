@@ -1,10 +1,10 @@
 Remove plugin display.
 
-The plugin has a dependency, glako, currently not packaged in Debian.
+The plugin has a dependency, grako, currently not packaged in Debian.
 
---- a/src/eyed3/plugins/DisplayPattern.ebnf
+--- a/eyed3/plugins/DisplayPattern.ebnf
 +++ /dev/null
-@@ -1,31 +0,0 @@
+@@ -1,34 +0,0 @@
 -(*
 -################################################################################
 -#  Copyright (C) 2016  Sebastian Patschorke <physicspatschi@gmx.de>
@@ -25,7 +25,10 @@ The plugin has a dependency, glako, currently not packaged in Debian.
 -################################################################################
 -
 -parser generation:
--$ python -m grako -o src/eyed3/plugins/display_parser.py src/eyed3/plugins/DisplayPattern.ebnf
+-$ python -m grako --name DisplayPattern \
+-                  -o eyed3/plugins/_display_parser.py \
+-                  eyed3/plugins/DisplayPattern.ebnf
+-
 -
 -*)
 -
@@ -36,11 +39,10 @@ The plugin has a dependency, glako, currently not packaged in Debian.
 -parameter           = [ {" "}* name:string "=" ] [ value:pattern ] ;
 -text                = text:?/(\\\\|\\%|\\\$|\\,|\\\(|\\\)|\\=|\\n|\\t|[^\\%$,()])+/? ;
 -string              = ?/([^\\%$,()=])+/? ;
---- a/src/eyed3/plugins/_display_parser.py
+--- a/eyed3/plugins/_display_parser.py
 +++ /dev/null
-@@ -1,228 +0,0 @@
+@@ -1,210 +0,0 @@
 -#!/usr/bin/env python
--# -*- coding: utf-8 -*-
 -
 -# CAVEAT UTILITOR
 -#
@@ -50,33 +52,55 @@ The plugin has a dependency, glako, currently not packaged in Debian.
 -#
 -# Any changes you make to it will be overwritten the next time
 -# the file is generated.
--
--
--from __future__ import (print_function, division, absolute_import,
--                        unicode_literals)
--
+-from grako.buffering import Buffer
 -from grako.parsing import graken, Parser
--from grako.util import re, RE_FLAGS  # noqa
+-from grako.util import generic_main  # noqa
 -
 -
--__version__ = (2016, 2, 17, 20, 35, 22, 2)
+-KEYWORDS = {}
 -
--__all__ = [
--    'DisplayPatternParser',
--    'DisplayPatternSemantics',
--    'main'
--]
+-
+-class DisplayPatternBuffer(Buffer):
+-    def __init__(
+-        self,
+-        text,
+-        whitespace=None,
+-        nameguard=None,
+-        comments_re=None,
+-        eol_comments_re=None,
+-        ignorecase=None,
+-        namechars='',
+-        **kwargs
+-    ):
+-        super(DisplayPatternBuffer, self).__init__(
+-            text,
+-            whitespace=whitespace,
+-            nameguard=nameguard,
+-            comments_re=comments_re,
+-            eol_comments_re=eol_comments_re,
+-            ignorecase=ignorecase,
+-            namechars=namechars,
+-            **kwargs
+-        )
 -
 -
 -class DisplayPatternParser(Parser):
--    def __init__(self,
--                 whitespace=None,
--                 nameguard=None,
--                 comments_re=None,
--                 eol_comments_re=None,
--                 ignorecase=None,
--                 left_recursion=True,
--                 **kwargs):
+-    def __init__(
+-        self,
+-        whitespace=None,
+-        nameguard=None,
+-        comments_re=None,
+-        eol_comments_re=None,
+-        ignorecase=None,
+-        left_recursion=False,
+-        parseinfo=True,
+-        keywords=None,
+-        namechars='',
+-        buffer_class=DisplayPatternBuffer,
+-        **kwargs
+-    ):
+-        if keywords is None:
+-            keywords = KEYWORDS
 -        super(DisplayPatternParser, self).__init__(
 -            whitespace=whitespace,
 -            nameguard=nameguard,
@@ -84,6 +108,10 @@ The plugin has a dependency, glako, currently not packaged in Debian.
 -            eol_comments_re=eol_comments_re,
 -            ignorecase=ignorecase,
 -            left_recursion=left_recursion,
+-            parseinfo=parseinfo,
+-            keywords=keywords,
+-            namechars=namechars,
+-            buffer_class=buffer_class,
 -            **kwargs
 -        )
 -
@@ -111,19 +139,18 @@ The plugin has a dependency, glako, currently not packaged in Debian.
 -        with self._group():
 -            self._token('%')
 -            self._string_()
--            self.ast['name'] = self.last_node
+-            self.name_last_node('name')
 -
 -            def block2():
 -                self._token(',')
 -                with self._group():
 -                    self._parameter_()
--                self.ast.setlist('parameters', self.last_node)
+-                self.add_last_node_to_name('parameters')
 -            self._closure(block2)
 -            self._token('%')
--        self.ast['tag'] = self.last_node
--
+-        self.name_last_node('tag')
 -        self.ast._define(
--            ['tag', 'name'],
+-            ['name', 'tag'],
 -            ['parameters']
 -        )
 -
@@ -132,22 +159,21 @@ The plugin has a dependency, glako, currently not packaged in Debian.
 -        with self._group():
 -            self._token('$')
 -            self._string_()
--            self.ast['name'] = self.last_node
+-            self.name_last_node('name')
 -            self._token('(')
 -            with self._optional():
 -                with self._group():
 -                    self._parameter_()
--                self.ast.setlist('parameters', self.last_node)
+-                self.add_last_node_to_name('parameters')
 -
 -                def block3():
 -                    self._token(',')
 -                    with self._group():
 -                        self._parameter_()
--                    self.ast.setlist('parameters', self.last_node)
+-                    self.add_last_node_to_name('parameters')
 -                self._closure(block3)
 -            self._token(')')
--        self.ast['function'] = self.last_node
--
+-        self.name_last_node('function')
 -        self.ast._define(
 -            ['function', 'name'],
 -            ['parameters']
@@ -161,12 +187,11 @@ The plugin has a dependency, glako, currently not packaged in Debian.
 -                self._token(' ')
 -            self._closure(block0)
 -            self._string_()
--            self.ast['name'] = self.last_node
+-            self.name_last_node('name')
 -            self._token('=')
 -        with self._optional():
 -            self._pattern_()
--            self.ast['value'] = self.last_node
--
+-            self.name_last_node('value')
 -        self.ast._define(
 -            ['name', 'value'],
 -            []
@@ -175,8 +200,7 @@ The plugin has a dependency, glako, currently not packaged in Debian.
 -    @graken()
 -    def _text_(self):
 -        self._pattern(r'(\\\\|\\%|\\\$|\\,|\\\(|\\\)|\\=|\\n|\\t|[^\\%$,()])+')
--        self.ast['text'] = self.last_node
--
+-        self.name_last_node('text')
 -        self.ast._define(
 -            ['text'],
 -            []
@@ -210,92 +234,34 @@ The plugin has a dependency, glako, currently not packaged in Debian.
 -        return ast
 -
 -
--def main(filename, startrule, trace=False, whitespace=None, nameguard=None):
--    import json
+-def main(filename, startrule, **kwargs):
 -    with open(filename) as f:
 -        text = f.read()
--    parser = DisplayPatternParser(parseinfo=False)
--    ast = parser.parse(
--        text,
--        startrule,
--        filename=filename,
--        trace=trace,
--        whitespace=whitespace,
--        nameguard=nameguard)
+-    parser = DisplayPatternParser()
+-    return parser.parse(text, startrule, filename=filename, **kwargs)
+-
+-
+-if __name__ == '__main__':
+-    import json
+-    from grako.util import asjson
+-
+-    ast = generic_main(main, DisplayPatternParser, name='DisplayPattern')
 -    print('AST:')
 -    print(ast)
 -    print()
 -    print('JSON:')
--    print(json.dumps(ast, indent=2))
+-    print(json.dumps(asjson(ast), indent=2))
 -    print()
--
--
--if __name__ == '__main__':
--    import argparse
--    import string
--    import sys
--
--    class ListRules(argparse.Action):
--        def __call__(self, parser, namespace, values, option_string):
--            print('Rules:')
--            for r in DisplayPatternParser.rule_list():
--                print(r)
--            print()
--            sys.exit(0)
--
--    parser = argparse.ArgumentParser(
--                        description="Simple parser for DisplayPattern.")
--    parser.add_argument('-l', '--list', action=ListRules, nargs=0,
--                        help="list all rules and exit")
--    parser.add_argument('-n', '--no-nameguard', action='store_true',
--                        dest='no_nameguard',
--                        help="disable the 'nameguard' feature")
--    parser.add_argument('-t', '--trace', action='store_true',
--                        help="output trace information")
--    parser.add_argument('-w', '--whitespace', type=str,
--                        default=string.whitespace,
--                        help="whitespace specification")
--    parser.add_argument('file', metavar="FILE", help="the input file to parse")
--    parser.add_argument('startrule', metavar="STARTRULE",
--                        help="the start rule for parsing")
--    args = parser.parse_args()
--
--    main(
--        args.file,
--        args.startrule,
--        trace=args.trace,
--        whitespace=args.whitespace,
--        nameguard=not args.no_nameguard
--    )
---- a/src/eyed3/plugins/display.py
+--- a/eyed3/plugins/display.py
 +++ /dev/null
-@@ -1,1146 +0,0 @@
--# -*- coding: utf-8 -*-
--################################################################################
--#  Copyright (C) 2014-2016  Sebastian Patschorke <physicspatschi@gmx.de>
--#
--#  This program is free software; you can redistribute it and/or modify
--#  it under the terms of the GNU General Public License as published by
--#  the Free Software Foundation; either version 2 of the License, or
--#  (at your option) any later version.
--#
--#  This program is distributed in the hope that it will be useful,
--#  but WITHOUT ANY WARRANTY; without even the implied warranty of
--#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
--#  GNU General Public License for more details.
--#
--#  You should have received a copy of the GNU General Public License
--#  along with this program; if not, see <http://www.gnu.org/licenses/>.
--#
--################################################################################
--from __future__ import print_function
+@@ -1,1128 +0,0 @@
 -import os
 -import re
 -import abc
 -
 -from argparse import ArgumentTypeError
 -
--from eyed3 import id3, compat
+-from eyed3 import id3
 -from eyed3.utils import console, formatSize, formatTime
 -from eyed3.plugins import LoaderPlugin
 -try:
@@ -312,7 +278,7 @@ The plugin has a dependency, glako, currently not packaged in Debian.
 -        self.__sub_patterns = sub_patterns
 -
 -    def output_for(self, audio_file):
--        output = u""
+-        output = ""
 -        for sub_pattern in self.sub_patterns or []:
 -            output += sub_pattern.output_for(audio_file)
 -        return output
@@ -335,7 +301,7 @@ The plugin has a dependency, glako, currently not packaged in Debian.
 -            self.sub_patterns = self.__compile_asts(asts)
 -            self.__text = None
 -        except BaseException as parsing_error:
--            raise PatternCompileException(compat.unicode(parsing_error))
+-            raise PatternCompileException(str(parsing_error))
 -
 -    def __compile_asts(self, asts):
 -        patterns = []
@@ -375,7 +341,8 @@ The plugin has a dependency, glako, currently not packaged in Debian.
 -        raise PatternCompileException("Unknown " + base_class.TYPE + " '" +
 -                                      class_name + "'")
 -
--    def __find_pattern_class(self, base_class, class_name):
+-    @staticmethod
+-    def __find_pattern_class(base_class, class_name):
 -        for pattern_class in Pattern.sub_pattern_classes(base_class):
 -            if class_name in pattern_class.NAMES:
 -                return pattern_class
@@ -425,8 +392,8 @@ The plugin has a dependency, glako, currently not packaged in Debian.
 -                character = os.linesep
 -            if character == 't':
 -                character = '\t'
--            self.__text = self.__text[:escape_match.start()] + character + \
--                          self.__text[escape_match.end():]
+-            self.__text =\
+-                f"{self.__text[:escape_match.start()]}{character}{self.__text[escape_match.end():]}"
 -
 -    def output_for(self, audio_file):
 -        return self.__text
@@ -1110,7 +1077,8 @@ The plugin has a dependency, glako, currently not packaged in Debian.
 -        color_name = self._parameter_value("color", audio_file)
 -        return console.formatText(text, b=bold, c=self.__color(color_name))
 -
--    def __color(self, color_name):
+-    @staticmethod
+-    def __color(color_name):
 -        return {"GREY": console.Fore.GREY,
 -                "RED": console.Fore.RED,
 -                "GREEN": console.Fore.GREEN,
@@ -1233,7 +1201,6 @@ The plugin has a dependency, glako, currently not packaged in Debian.
 -        if len(text) > 0:
 -            output = self._parameter_value("output", audio_file)
 -            return self._replace_placeholders(output, [["#t", text]])
--            return output.replace("#t", text)
 -        else:
 -            return self._parameter_value("empty", audio_file)
 -
@@ -1245,23 +1212,19 @@ The plugin has a dependency, glako, currently not packaged in Debian.
 -    DESCRIPTION = "Repeats text"
 -
 -    def _get_output_for(self, audio_file):
--        output = u""
 -        content = self._parameter_value("text", audio_file)
 -        count = self._parameter_value("count", audio_file)
 -        try:
 -            count = int(count)
 -        except ValueError:
--            raise DisplayException(self._error_message("'" + count +
--                                                       "' is not a number."))
--        for i in range(count):
--            output += content
--        return output
+-            raise DisplayException(self._error_message(f"'{count}' is not a number."))
+-        return content * count
 -
 -
 -class DisplayPlugin(LoaderPlugin):
 -    NAMES = ["display"]
--    SUMMARY = u"Tag Display"
--    DESCRIPTION = ""u"""
+-    SUMMARY = "Tag Display"
+-    DESCRIPTION = """
 -Prints specific tag information.
 -"""
 -
@@ -1290,6 +1253,7 @@ The plugin has a dependency, glako, currently not packaged in Debian.
 -
 -        self.__pattern = None
 -        self.__return_code = 0
+-        self.__output_ending = None
 -
 -    def start(self, args, config):
 -        super(DisplayPlugin, self).start(args, config)
@@ -1299,9 +1263,9 @@ The plugin has a dependency, glako, currently not packaged in Debian.
 -            return
 -
 -        if not _have_grako:
--            console.printError(u"Unknown module 'grako'" + os.linesep +
--                               u"Please install grako! " +
--                               u"E.g. $ pip install grako")
+-            console.printError("Unknown module 'grako'" + os.linesep +
+-                               "Please install grako! " +
+-                               "E.g. $ pip install grako")
 -            self.__return_code = 2
 -            return
 -
@@ -1337,6 +1301,8 @@ The plugin has a dependency, glako, currently not packaged in Debian.
 -        return self.__return_code
 -
 -    def __print_pattern_help(self):
+-        print("\nAll pattern variable are of the form `%var%`\n")
+-
 -        # FIXME: Force some order
 -        print(console.formatText("ID3 Tags:", b=True))
 -        self.__print_complex_pattern_help(TagPattern)
@@ -1372,7 +1338,8 @@ The plugin has a dependency, glako, currently not packaged in Debian.
 -                rows.append(["", "   " + parameter_desc])
 -        self.__print_rows(rows, "\t", "  ")
 -
--    def __print_rows(self, rows, indent, spacing):
+-    @staticmethod
+-    def __print_rows(rows, indent, spacing):
 -        row_widths = []
 -        for row in rows:
 -            for n in range(len(row)):
