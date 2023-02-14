@@ -4,6 +4,7 @@ eyed3 (0.8.11-1) UNRELEASED; urgency=low
   * Drop patch support-debian-python-magic
     python `magic` module in debian is now the same as pypi python-magic used
     upstream
+  * Update Standards-Version to 4.6.1, no changes needed
 
  -- Gaetano Guerriero <x.guerriero@tin.it>  Wed, 27 Nov 2019 10:21:11 +0100
 
