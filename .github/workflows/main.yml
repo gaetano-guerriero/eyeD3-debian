@@ -4,9 +4,11 @@ on:
   push:
     branches:
       - master
+      - 0.9.x
   pull_request:
     branches:
       - master
+      - 0.9.x
 
 jobs:
   build:
@@ -14,8 +16,8 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        os: [ Ubuntu, MacOS, Windows ]
-        python-version: [ "3.9", "3.8", "3.7", "3.6"]
+        os: [Ubuntu, MacOS, Windows]
+        python-version: ["3.10", "3.9", "3.8"]
 
     steps:
     - uses: actions/checkout@v2
@@ -42,13 +44,13 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install .[test] .[display-plugin]
+        pip install .[test] .[display-plugin] .[yaml-plugin]
 
     # Run tests
     - name: Tests
       run: |
         make lint
-        make test
+        make coverage
         make check-manifest
 
     # XXX: What to do with coverage? Was using coverall, meh. Github pages?
