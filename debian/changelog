@@ -1,6 +1,7 @@
-eyed3 (0.9.6-1) UNRELEASED; urgency=low
+eyed3 (0.9.7-1) UNRELEASED; urgency=low
 
   * New upstream version
+    (Closes: #1009695)
   * Drop patch support-debian-python-magic
     python `magic` module in debian is now the same as pypi python-magic used
     upstream
