@@ -1,3 +1,4 @@
 python_magic python3-magic
 pathlib
 dataclasses
+coverage
