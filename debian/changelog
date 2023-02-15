@@ -1,17 +1,19 @@
-eyed3 (0.9.7-1) UNRELEASED; urgency=low
+eyed3 (0.9.7-1) unstable; urgency=low
 
   * New upstream version
     (Closes: #1009695)
   * Drop patch support-debian-python-magic
     python `magic` module in debian is now the same as pypi python-magic used
     upstream
-  * Update Standards-Version to 4.6.1, no changes needed
   * Drop patch support-pylast-3
     python pylast 4 is now supported upstream
   * Drop patch remove-display-plugin
     Plugin has been removed upstream
+  * Update Standards-Version to 4.6.1, no changes needed
 
- -- Gaetano Guerriero <x.guerriero@tin.it>  Thu, 23 Dec 2021 10:28:07 +0100
+  * Upload sponsored by Petter Reinholdtsen.
+
+ -- Gaetano Guerriero <x.guerriero@tin.it>  Wed, 15 Feb 2023 08:21:43 +0100
 
 eyed3 (0.8.10-4) unstable; urgency=medium
 
