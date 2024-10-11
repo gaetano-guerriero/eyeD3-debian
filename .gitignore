@@ -95,3 +95,7 @@ ENV/
 
 # Rope project settings
 .ropeproject
+/.pybuild/
+/debian/python3-eyed3/
+/debian/eyed3/
+/debian/.debhelper/
