@@ -25,7 +25,7 @@ Description: Python module for id3-tags manipulation (Python 3 version)
 Package: eyed3
 Architecture: all
 Depends: python3-eyed3 (= ${source:Version}), ${python3:Depends},
-         ${misc:Depends}, python3-pkg-resources
+         ${misc:Depends}
 Description: Display and manipulate id3-tags on the command-line
  A command-line editor to add/edit/remove ID3-tags on mp3 files.
  It supports version 1.0,1.1,2.3 and 2.4 of the ID3 standard.

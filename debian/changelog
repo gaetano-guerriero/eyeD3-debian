@@ -2,6 +2,9 @@ eyed3 (0.9.7-2) UNRELEASED; urgency=medium
 
   * Update Standards-Version to 4.7.0, no changes needed
 
+  * Remove unneeded dependency on python3-pkg-resources
+    (Closes: #1083381)
+
  -- Gaetano Guerriero <x.guerriero@tin.it>  Fri, 11 Oct 2024 22:36:11 +0200
 
 eyed3 (0.9.7-1) unstable; urgency=low
