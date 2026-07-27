@@ -3,6 +3,7 @@ import pytest
 import eyed3
 from uuid import uuid4
 from pathlib import Path
+from packaging.version import parse, Version
 
 
 DATA_D = Path(__file__).parent / "data"
@@ -18,8 +19,7 @@ def _tempCopy(src, dest_dir) -> Path:
 def audiofile(request, tmpdir):
     """Makes a copy of test.mp3 and loads it using eyed3.load()."""
     if not Path(DATA_D).exists():
-        yield None
-        return
+        pytest.skip("data directory not found")
 
     marker = request.node.get_closest_marker("audiofile_name")
     if marker:
@@ -62,3 +62,9 @@ def eyeD3():
         return eyed3.load(audiofile.path, tag_version=reload_version)
 
     return func
+
+@pytest.fixture(scope="session")
+def eyed3_version() -> Version:
+    """Returns the version of eyed3."""
+    from packaging.version import parse
+    return parse(eyed3.__about__.__version__)

@@ -62,7 +62,7 @@ def load(name=None, reload=False, paths=None):
                     continue
 
                 for attr in [getattr(mod, a) for a in dir(mod)]:
-                    if type(attr) == type and issubclass(attr, Plugin):
+                    if type(attr) is type and issubclass(attr, Plugin):
                         # This is a eyed3.plugins.Plugin
                         PluginClass = attr
                         if (PluginClass not in list(_PLUGINS.values()) and
@@ -134,10 +134,13 @@ class Plugin(utils.FileHandler):
         file_size = path.stat().st_size
         path_str = str(path)
         size_str = formatSize(file_size)
-        size_len = len(size_str) + 5
+        size_len = len(size_str) + 4
         if len(path_str) + size_len >= width:
             path_str = "..." + str(path)[-(75 - size_len):]
         padding_len = width - len(path_str) - size_len
+        # ensure padding_len greater than 0
+        if padding_len <= 0:
+            padding_len = 1
 
         return "{path}{color}{padding}[ {size} ]{reset}"\
                .format(path=boldText(path_str, c=HEADER_COLOR()),

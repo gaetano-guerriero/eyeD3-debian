@@ -1,6 +1,7 @@
 import os
 import re
 import dataclasses
+import shutil
 from functools import partial
 from argparse import ArgumentTypeError
 
@@ -8,7 +9,7 @@ from eyed3.plugins import LoaderPlugin
 from eyed3 import core, id3, mp3
 from eyed3.utils import makeUniqueFileName, b, formatTime
 from eyed3.utils.console import (
-    printMsg, printError, printWarning, boldText, getTtySize,
+    printMsg, printError, printWarning, boldText,
 )
 from eyed3.id3.frames import ImageFrame
 from eyed3.mimetype import guessMimetype
@@ -444,7 +445,7 @@ optional. For example, 2012-03 is valid, 2012--12 is not.
         if not self.audio_file:
             return
 
-        self.terminal_width = getTtySize()[1]
+        self.terminal_width = shutil.get_terminal_size()[1]
         self.printHeader(f)
 
         if self.audio_file.tag and self.handleRemoves(self.audio_file.tag):
@@ -620,7 +621,8 @@ optional. For example, 2012-03 is valid, 2012--12 is not.
             # UFID
             for ufid in tag.unique_file_ids:
                 printMsg("%s [%s] : %s" %
-                        (boldText("Unique File ID:"), ufid.owner_id,
+                        (boldText("Unique File ID:"),
+                         ufid.owner_id.decode("unicode_escape"),
                          ufid.uniq_id.decode("unicode_escape")))
 
             # COMM
@@ -655,8 +657,8 @@ optional. For example, 2012-03 is valid, 2012--12 is not.
 
             # user url frames
             for u in tag.user_url_frames:
-                printMsg("%s [Description: %s]: %s" % (u.id, u.description,
-                                                       u.url))
+                printMsg("%s: [Description: %s]\n%s" %
+                         (boldText("UserURLFrame"), u.description, u.url))
 
             # APIC
             for img in tag.images:
@@ -1004,7 +1006,7 @@ optional. For example, 2012-03 is valid, 2012--12 is not.
 
         # --remove-frame
         for fid in self.args.remove_fids:
-            assert(isinstance(fid, bytes))
+            assert isinstance(fid, bytes)
             if fid in tag.frame_set:
                 del tag.frame_set[fid]
                 retval = True
