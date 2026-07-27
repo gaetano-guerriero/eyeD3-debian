@@ -1,0 +1,86 @@
+[build-system]
+requires = [
+    "setuptools", "wheel",
+]
+build-backend = "setuptools.build_meta"
+
+[tool.regarding]
+years = "2002-2025"
+release_name = "Guilty Conscience"
+
+[project]
+version = "0.9.9"
+name = "eyeD3"
+description = "Python audio data toolkit (ID3 and MP3)"
+readme = "README.rst"
+authors = [
+    {name = "Travis Shirk", email = "travis@pobox.com"},
+]
+#license = "GPL-3.0-or-later"
+requires-python = ">=3.10,<4.0"
+classifiers = [
+    "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+    "Environment :: Console",
+    "Intended Audience :: End Users/Desktop",
+    "Topic :: Multimedia :: Sound/Audio :: Editors",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Intended Audience :: Developers",
+    "Operating System :: POSIX",
+    "Natural Language :: English",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+]
+keywords = ["id3", "mp3", "python"]
+dependencies = [
+    "filetype>=1.2.0",
+    "deprecation>=2.1.0",
+]
+
+[project.urls]
+homepage = "https://eyed3.readthedocs.io/"
+repository = "https://github.com/nicfit/eyeD3"
+
+[project.scripts]
+eyeD3 = "eyed3.main:_main"
+
+[tool.setuptools]
+packages = ["eyed3", "eyed3.id3", "eyed3.mp3", "eyed3.plugins", "eyed3.utils"]
+
+[project.optional-dependencies]
+yaml-plugin = [
+    "PyYAML>=6.0.2",
+]
+art-plugin = [
+    "Pillow>=11.3.0",
+    "pylast>=5.5.0",
+    "requests>=2.32.4",
+]
+test = [
+    "pytest>=8.3.5",
+    "coverage>=7.8.0",
+    "tox>=4.25.0",
+    "factory-boy>=3.3.3",
+    "pytest-cov>=6.1.1",
+    "check-manifest>=0.50",
+    "flake8>=7.2.0",
+]
+dev = [
+    "twine>=6.1.0",
+    "Sphinx>=7.4.7",
+    "sphinx-rtd-theme>=3.0.2",
+    "sphinx-issues>=5.0.1",
+    "cogapp>=3.5",
+    "Paver>=1.3.4",
+    "nicfit-py[cookiecutter]>=0.8.7",
+    "regarding>=0.2.0",
+]
+
+[tool.pdm]
+distribution = true
+
+[tool.coverage.html]
+directory = "build/tests/coverage"
