@@ -2,33 +2,32 @@ Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
 Upstream-Name: eyeD3
 Upstream-Contact: Travis Shirk <travis@pobox.com>
 Source: https://github.com/nicfit/eyeD3
-License: GPL-2+
+License: GPL-3
 
 Files: *
 Copyright: (C) 2002-2011  Travis Shirk <travis@pobox.com>
-License: GPL-2+
+License: GPL-3
 
 Files: debian/*
 Copyright: 2003 Alexander Wirt <formorer@debian.org>
            2016 Gaetano Guerriero <x.guerriero@tin.it>
-License: GPL-2+
+License: GPL-3+
+  The Debian packaging information is under the GPL, version 3 or later
+  On Debian systems, the complete text of the GNU General Public License
+  version 3 can be found in `/usr/share/common-licenses/GPL-3'.
 
-
-License: GPL-2+
-  This program is free software; you can redistribute it and/or modify
-  it under the terms of the GNU General Public License as published by
-  the Free Software Foundation; either version 2 of the License, or
-  (at your option) any later version.
-  .
-  This program is distributed in the hope that it will be useful,
-  but WITHOUT ANY WARRANTY; without even the implied warranty of
-  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  GNU General Public License for more details.
-  .
-  You should have received a copy of the GNU General Public License with
-  the Debian GNU/Linux distribution in file /usr/share/common-licenses/GPL-2;
-  if not, write to the  Free Software Foundation, Inc., 51 Franklin St, Fifth
-  Floor, Boston, MA 02110-1301, USA.
-  .
-  On Debian systems, the complete text of the GNU General Public
-  License, version 2, can be found in /usr/share/common-licenses/GPL-2.
+License: GPL-3
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License version 3,
+ as published by the Free Software Foundation.
+ .
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+ .
+ You should have received a copy of the GNU General Public License
+ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ .
+ On Debian-based systems the full text of the GPL, version 3, can be found at
+ /usr/share/common-licenses/GPL-3.
