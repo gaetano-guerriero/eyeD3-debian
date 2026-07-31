@@ -5,14 +5,17 @@ include LICENSE
 include README.rst
 include Makefile
 include tox.ini
+include setup.py
+include pdm.lock
+include .readthedocs.yaml
 
 graft docs
 prune docs/_build
 
-recursive-include test *.py
+recursive-include tests *.py
+include tests/pytest.ini
 
 exclude .cookiecutter.yml
-exclude .gitchangelog.rc
 global-exclude __pycache__
 global-exclude .editorconfig
 global-exclude *.py[co]
@@ -20,11 +23,8 @@ global-exclude *.py[co]
 recursive-include requirements *.txt
 
 recursive-include eyed3 *.py
-include eyed3/plugins/DisplayPattern.ebnf
 recursive-include examples *
 
-exclude fabfile.py
-exclude mkenv.sh
-exclude pavement.py
+exclude pdm.lock
 prune etc
 

@@ -1,3 +1,5 @@
+release.sh
+release.md
 test*.id3
 tests/data
 tests/eyeD3-test-data*
@@ -95,7 +97,3 @@ ENV/
 
 # Rope project settings
 .ropeproject
-/.pybuild/
-/debian/python3-eyed3/
-/debian/eyed3/
-/debian/.debhelper/

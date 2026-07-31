@@ -10,7 +10,7 @@ from .. import core
 from ..core import TXXX_ALBUM_TYPE, TXXX_ARTIST_ORIGIN, ALBUM_TYPE_IDS, ArtistOrigin
 from .. import Error
 from . import (ID3_ANY_VERSION, ID3_DEFAULT_VERSION, ID3_V1, ID3_V1_0, ID3_V1_1,
-               ID3_V2, ID3_V2_2, ID3_V2_3, ID3_V2_4, versionToString)
+               ID3_V2, ID3_V2_2, ID3_V2_3, ID3_V2_4, versionToString, GenreException)
 from . import DEFAULT_LANG
 from . import Genre
 from . import frames
@@ -174,7 +174,7 @@ class Tag(core.Tag):
                 self.release_date = int(year)
         except ValueError:
             # Bogus year strings.
-            log.warn("ID3v1.x tag contains invalid year: %s" % year)
+            log.warning("ID3v1.x tag contains invalid year: %s" % year)
             pass
 
         # Can't use ID3_V1_STRIP_CHARS here, since the final byte is numeric
@@ -202,7 +202,7 @@ class Tag(core.Tag):
         log.debug(f"Genre ID: {genre}")
         try:
             self.genre = genre
-        except ValueError as ex:
+        except GenreException as ex:
             log.warning(ex)
             self.genre = None
 
@@ -237,7 +237,7 @@ class Tag(core.Tag):
     @requireUnicode(2)
     def setTextFrame(self, fid: bytes, txt: str):
         fid = b(fid, codecs.ascii_encode)
-        if not fid.startswith(b"T") or fid.startswith(b"TX"):
+        if not frames.TextFrame.isValidFrameId(fid):
             raise ValueError("Invalid frame-id for text frame")
 
         if not txt and self.frame_set[fid]:
@@ -248,7 +248,7 @@ class Tag(core.Tag):
     # FIXME: is returning data not a Frame.
     def getTextFrame(self, fid: bytes):
         fid = b(fid, codecs.ascii_encode)
-        if not fid.startswith(b"T") or fid.startswith(b"TX"):
+        if not frames.TextFrame.isValidFrameId(fid):
             raise ValueError("Invalid frame-id for text frame")
         f = self.frame_set[fid]
         return f[0].text if f else None
@@ -387,7 +387,7 @@ class Tag(core.Tag):
         return bpm
 
     def _setBpm(self, bpm):
-        assert(bpm >= 0)
+        assert bpm >= 0
         self.setTextFrame(frames.BPM_FID, str(bpm))
 
     bpm = property(_getBpm, _setBpm)
@@ -535,7 +535,7 @@ class Tag(core.Tag):
     The date the work was originally released.
 
     NOTE: ID3v2.3 only stores year. If the Date object is more precise it is store in `XDOR`, and
-    XDOR is preferred when acessing. The year-only date is stored in the standard `TORY` frame as
+    XDOR is preferred when accessing. The year-only date is stored in the standard `TORY` frame as
     well.
     """)
 
@@ -556,11 +556,11 @@ class Tag(core.Tag):
                 date = core.Date.parse(date)
             self._setDate(b"TYER", str(date.year))
             if None not in (date.month, date.day):
-                date_str = "%s%s" % (str(date.day).rjust(2, "0"),
+                date_str = "D%s-%s" % (str(date.day).rjust(2, "0"),
                                      str(date.month).rjust(2, "0"))
                 self._setDate(b"TDAT", date_str)
             if None not in (date.hour, date.minute):
-                date_str = "%s%s" % (str(date.hour).rjust(2, "0"),
+                date_str = "T%s:%s" % (str(date.hour).rjust(2, "0"),
                                      str(date.minute).rjust(2, "0"))
                 self._setDate(b"TIME", date_str)
 
@@ -927,10 +927,10 @@ class Tag(core.Tag):
     def _saveV1Tag(self, version):
         self._raiseIfReadonly()
 
-        assert(version[0] == 1)
+        assert version[0] == 1
 
         def pack(s, n):
-            assert(type(s) is bytes)
+            assert type(s) is bytes
             if len(s) > n:
                 log.warning(f"ID3 v1.x text value truncated to length {n}")
             return s.ljust(n, b'\x00')[:n]
@@ -1103,7 +1103,7 @@ class Tag(core.Tag):
     def _saveV2Tag(self, version, encoding, max_padding):
         self._raiseIfReadonly()
 
-        assert(version[0] == 2 and version[1] != 2)
+        assert version[0] == 2 and version[1] != 2
 
         log.debug("Rendering tag version: %s" % versionToString(version))
 
@@ -1845,7 +1845,7 @@ class ChaptersAccessor(AccessorBase):
         return super().get(element_id)
 
     def __getitem__(self, elem_id):
-        """Overiding the index based __getitem__ for one indexed with chapter
+        """Overriding the index based __getitem__ for one indexed with chapter
         element IDs. These are stored in the tag's table of contents frames."""
         for chapter in (self._fs[frames.CHAPTER_FID] or []):
             if chapter.element_id == elem_id:
@@ -1905,7 +1905,7 @@ class TocAccessor(AccessorBase):
         return super().get(element_id)
 
     def __getitem__(self, elem_id):
-        """Overiding the index based __getitem__ for one indexed with table
+        """Overriding the index based __getitem__ for one indexed with table
         of contents element IDs."""
         for toc in (self._fs[frames.TOC_FID] or []):
             if toc.element_id == elem_id:
@@ -2012,7 +2012,7 @@ class TagTemplate(string.Template):
 
     @staticmethod
     def _file(tag, param):
-        assert(param.startswith("file"))
+        assert param.startswith("file")
 
         if param.endswith(":ext"):
             return os.path.splitext(tag.file_info.name)[1][1:]
