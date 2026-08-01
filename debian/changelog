@@ -1,8 +1,12 @@
-eyed3 (0.9.9-1) UNRELEASED; urgency=medium
+eyed3 (0.9.9-1) unstable; urgency=medium
 
-  * New upstream release 0.9.9.
+  * New upstream release 0.9.9
+    (Closes: #1142397)
+    Thanks to Germano Castanho for the update to the new version.
 
- -- Germano Castanho <germanocastanho@proton.me>  Mon, 27 Jul 2026 04:00:03 -0300
+  * Upload sponsored by Petter Reinholdtsen.
+
+ -- Gaetano Guerriero <x.guerriero@tin.it>  Sat, 01 Aug 2026 13:49:54 +0200
 
 eyed3 (0.9.7-2) unstable; urgency=medium
 
