@@ -3,6 +3,7 @@ eyed3 (0.9.9-1) unstable; urgency=medium
   * New upstream release 0.9.9
     (Closes: #1142397)
     Thanks to Germano Castanho for the update to the new version.
+  * Update Standards-Version to 4.7.4
 
   * Upload sponsored by Petter Reinholdtsen.
 
