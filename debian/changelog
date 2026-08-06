@@ -4,10 +4,12 @@ eyed3 (0.9.9-1) unstable; urgency=medium
     (Closes: #1142397)
     Thanks to Germano Castanho for the update to the new version.
   * Update Standards-Version to 4.7.4
+  * Update to debhelper 14 and build package with pybuild-plugin-pyproject
+  * Add patch to fix syntax warnings in the manpage
 
   * Upload sponsored by Petter Reinholdtsen.
 
- -- Gaetano Guerriero <x.guerriero@tin.it>  Sat, 01 Aug 2026 13:49:54 +0200
+ -- Gaetano Guerriero <x.guerriero@tin.it>  Thu, 06 Aug 2026 23:50:35 +0200
 
 eyed3 (0.9.7-2) unstable; urgency=medium
 
